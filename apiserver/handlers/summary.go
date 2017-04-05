@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -11,12 +12,11 @@ import (
 )
 
 type MetaData struct {
-	Property string // Property attribute without prefix.
-	Content  string // Content attribute. See http://ogp.me/#data_types for a list of content attribute types.
-	Prefix   string
+	Property string
+	Content  string
 }
 
-type openGraph struct {
+type OpenGraph struct {
 	Title string `json:"title"`
 	Type  string `json:"type"`
 	Image string `json:"image"`
@@ -29,10 +29,9 @@ const openGraphPrefix = "og:"
 //openGraphProps represents a map of open graph property names and values
 type openGraphProps map[string]string
 
-// func getPageSummary(url string) (openGraphProps, error) {
-func getPageSummary(url string) ([]MetaData, error) {
-	//Get the URL
-	//If there was an error, return it
+func getPageSummary(url string) (openGraphProps, error) {
+	// func getPageSummary(url string) ([]MetaData, error) {
+	//Get request to the URL, return if err
 	response, err := http.Get(url)
 	if err != nil {
 		log.Fatalf("Error fetching URL: %v\n", err)
@@ -59,8 +58,8 @@ func getPageSummary(url string) ([]MetaData, error) {
 	//create a new openGraphProps map instance to hold
 	//the Open Graph properties you find
 	//(see type definition above)
-	// ogProps := make(openGraphProps)
-	// fmt.Printf(ogProps)
+	summary := make(openGraphProps)
+	// ogErr := nil
 
 	//tokenize the response body's HTML and extract
 	//any Open Graph properties you find into the map,
@@ -73,66 +72,59 @@ func getPageSummary(url string) ([]MetaData, error) {
 	//HINTS: https://info344-s17.github.io/tutorials/tokenizing/
 	//https://godoc.org/golang.org/x/net/html
 
-	// scanner := html.NewTokenizer(response.Body)
-	var tags []MetaData
+	fmt.Printf("Initialize scanner\n")
 	scanner := html.NewTokenizer(response.Body)
 	for {
 		tt := scanner.Next()
-		//	EoF Handling
 		if tt == html.ErrorToken {
+			//	EoF Handling (break loop)
 			if scanner.Err() == io.EOF {
-				return tags, nil
+				return summary, nil
+			} else {
+				//	Handle unanticipated tokenizer errors
+				return summary, scanner.Err()
 			}
-			return nil, scanner.Err()
 		}
 
 		//	Read the next open tag
 		t := scanner.Token()
 		//	Exit once we finish the head (metadata) parent tag
 		if t.Data == "head" && t.Type == html.EndTagToken {
-			return tags, nil
+			return summary, nil
 		}
 
 		//	<Meta>
 		if t.Data == "meta" {
-			//	Iterate through tag and extract OG properties
-			var property, content, tagPrefix string
+			//	Iterate through tag and extract OG attributes
+			var property, content string
 			for _, a := range t.Attr {
 				key := a.Key
 				val := a.Val
 				switch key {
 				case "property":
+					//	Validate prefix, but discard it during assignment
 					if strings.HasPrefix(val, openGraphPrefix) {
-						property = val
-						// fmt.Printf(property[len(openGraphPrefix):] + "\n")
+						property = val[len(openGraphPrefix):]
 					}
 				case "content":
 					content = val
-					// fmt.Printf("CONTENT: " + content + "\n")
 				}
 			}
-
 			//	Throw away this tag if the data is misformatted
 			if property == "" || content == "" {
 				continue
+			} else {
+				summary[property] = content
 			}
-
-			//	MANUAL TESTING: toString the data
+			//	FOR MANUAL TESTING: toString the data
 			fmt.Printf(property + " = " + content + "\n")
+			//	TODO: Handle multiple subtypes / data for images
 
-			// fmt.Printf(tagPrefix)
-			idx := strings.Index(property, ":")
-			if idx == -1 {
-				continue
-			}
-			tagPrefix = property[:idx]
-
-			tags = append(tags, MetaData{property[len(tagPrefix+":"):], content, tagPrefix})
 		}
 
 	}
-
-	return nil, nil
+	//	Finally
+	return summary, nil
 
 }
 
@@ -160,8 +152,8 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//and holding on to the returned openGraphProps map
 	//(see type definition above)
 	//	TODO: Use openGraphProps type
-	_, err := getPageSummary(url)
-	// summary, err := getPageSummary(url)
+	// _, err := getPageSummary(url)
+	summary, err := getPageSummary(url)
 
 	//if you get back an error, respond to the client
 	//with that error and an http.StatusBadRequest code
@@ -173,6 +165,10 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//otherwise, respond by writing the openGrahProps
 	//map as a JSON-encoded object
 	//	TODO
+	encoder := json.NewEncoder(w)
+	if err := encoder.Encode(summary); err != nil {
+		http.Error(w, "error encoding json: "+err.Error(), http.StatusInternalServerError)
+	}
 
 	//   Content-Type: application/json; charset=utf-8 |	Inform client of response type (JSON)
 	w.Header().Add("Content-Type", "application/json; charset=utf-8")
