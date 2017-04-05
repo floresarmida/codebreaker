@@ -11,13 +11,6 @@ import (
 	"golang.org/x/net/html"
 )
 
-// type OpenGraph struct {
-// 	Title string `json:"title"`
-// 	Type  string `json:"type"`
-// 	Image string `json:"image"`
-// 	URL   string `json:"url"`
-// }
-
 //openGraphPrefix is the prefix used for Open Graph meta properties
 const openGraphPrefix = "og:"
 
@@ -30,10 +23,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 	if err != nil {
 		log.Fatalf("Error fetching URL: %v\n", err)
 	}
-
-	//ensure that the response body stream is closed eventually
-	//HINTS: https://gobyexample.com/defer
-	//https://golang.org/pkg/net/http/#Response
+	//	Guarentee closure of stream
 	defer response.Body.Close()
 
 	//if the response StatusCode is >= 400
@@ -51,26 +41,16 @@ func getPageSummary(url string) (openGraphProps, error) {
 		return nil, err
 	}
 
-	//create a new openGraphProps map instance to hold
-	//the Open Graph properties you find
-	//(see type definition above)
+	//	Instance for holding summary of OG props
 	summary := make(openGraphProps)
 
-	//tokenize the response body's HTML and extract
-	//any Open Graph properties you find into the map,
-	//using the Open Graph property name as the key, and the
-	//corresponding content as the value.
-	//strip the openGraphPrefix from the property name before
-	//you add it as a new key, so that the key is just `title`
-	//and not `og:title` (for example).
-
-	//HINTS: https://info344-s17.github.io/tutorials/tokenizing/
-	//https://godoc.org/golang.org/x/net/html
+	//	Tokenize HTML, extract OG props
 	scanner := html.NewTokenizer(response.Body)
 	for {
-		tt := scanner.Next()
-		if tt == html.ErrorToken {
-			//	EoF Handling (break loop)
+		tokenType := scanner.Next()
+		//	Break on EoF or err
+		if tokenType == html.ErrorToken {
+			//	EoF Handling (anticipated, trigger return)
 			if scanner.Err() == io.EOF {
 				return summary, nil
 			}
@@ -78,23 +58,24 @@ func getPageSummary(url string) (openGraphProps, error) {
 			return summary, scanner.Err()
 		}
 
-		//	Read the next open tag
-		t := scanner.Token()
-		//	Exit once we finish the head (metadata) parent tag
-		if t.Data == "head" && t.Type == html.EndTagToken {
+		//	Read the next tag
+		token := scanner.Token()
+		//	Exit on </head>
+		if token.Type == html.EndTagToken && token.Data == "head" {
 			return summary, nil
 		}
 
-		//	Process <Meta> tags
-		if t.Data == "meta" {
+		//	Process <Meta> tag
+		if token.Data == "meta" {
 			//	Iterate through tag and extract OG attributes
 			var property, content string
-			for _, a := range t.Attr {
+			for _, a := range token.Attr {
 				key := a.Key
 				val := a.Val
 				switch key {
+				//	Every OG tag has a property and content key
 				case "property":
-					//	Validate prefix, but discard it during assignment
+					//	Validate OG prefix, but discard it during assignment
 					if strings.HasPrefix(val, openGraphPrefix) {
 						property = val[len(openGraphPrefix):]
 					}
@@ -102,7 +83,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 					content = val
 				}
 			}
-			//	If data is complete, write to map
+			//	If the props are valid (e.g. both exist), add to OG summary
 			if property != "" && content != "" {
 				summary[property] = content
 			}
@@ -111,9 +92,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 
 }
 
-//SummaryHandler fetches the URL in the `url` query string parameter, extracts
-//summary information about the returned page and sends those summary properties
-//to the client as a JSON-encoded object.
+//	SummaryHandler | Given a URL, returns OpenGraph props w/ JSON encoding
 func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//   Access-Control-Allow-Origin: * | Permit cross-origin API calls
 	w.Header().Add("Access-Control-Allow-Origin", "*")
@@ -124,26 +103,21 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//HINT: https://golang.org/pkg/net/http/#Request.FormValue
 	url := r.FormValue("url")
 
-	//if no `url` parameter was provided, respond with
-	//an http.StatusBadRequest error and return
-	//HINT: https://golang.org/pkg/net/http/#Error
+	//	Case: No URL query
 	if len(url) == 0 {
 		http.Error(w, "Error - No URL query provided",
 			http.StatusBadRequest)
 		return
 	}
-	//call getPageSummary() passing the requested URL
-	//and holding on to the returned openGraphProps map
-	//(see type definition above)
+
+	//	Generate OG page summary
 	summary, err := getPageSummary(url)
-	//if you get back an error, respond to the client
-	//with that error and an http.StatusBadRequest code
+	//	Handle HTTP errors if they arise
 	if err != nil {
 		http.Error(w, err.Error(),
 			http.StatusBadRequest)
 	}
-	//otherwise, respond by writing the openGrahProps
-	//map as a JSON-encoded object
+	// Encode openGraphProps as a JSON object for user
 	encoder := json.NewEncoder(w)
 	if err := encoder.Encode(summary); err != nil {
 		http.Error(w, "JSON encoding error: "+err.Error(), http.StatusInternalServerError)
