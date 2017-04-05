@@ -11,17 +11,12 @@ import (
 	"golang.org/x/net/html"
 )
 
-type MetaData struct {
-	Property string
-	Content  string
-}
-
-type OpenGraph struct {
-	Title string `json:"title"`
-	Type  string `json:"type"`
-	Image string `json:"image"`
-	URL   string `json:"url"`
-}
+// type OpenGraph struct {
+// 	Title string `json:"title"`
+// 	Type  string `json:"type"`
+// 	Image string `json:"image"`
+// 	URL   string `json:"url"`
+// }
 
 //openGraphPrefix is the prefix used for Open Graph meta properties
 const openGraphPrefix = "og:"
@@ -71,8 +66,6 @@ func getPageSummary(url string) (openGraphProps, error) {
 
 	//HINTS: https://info344-s17.github.io/tutorials/tokenizing/
 	//https://godoc.org/golang.org/x/net/html
-
-	fmt.Printf("Initialize scanner\n")
 	scanner := html.NewTokenizer(response.Body)
 	for {
 		tt := scanner.Next()
@@ -80,10 +73,9 @@ func getPageSummary(url string) (openGraphProps, error) {
 			//	EoF Handling (break loop)
 			if scanner.Err() == io.EOF {
 				return summary, nil
-			} else {
-				//	Handle unanticipated tokenizer errors
-				return summary, scanner.Err()
 			}
+			//	Handle unanticipated tokenizer errors
+			return summary, scanner.Err()
 		}
 
 		//	Read the next open tag
@@ -110,21 +102,16 @@ func getPageSummary(url string) (openGraphProps, error) {
 					content = val
 				}
 			}
-			//	Throw away this tag if the data is misformatted
-			if property == "" || content == "" {
-				continue
-			} else {
+			//	If data is complete, write to map
+			if property != "" && content != "" {
 				summary[property] = content
+				//	FOR MANUAL TESTING: toString the data
+				fmt.Printf(property + " = " + content + "\n")
+				//	TODO: Handle multiple subtypes / data for images
 			}
-			//	FOR MANUAL TESTING: toString the data
-			fmt.Printf(property + " = " + content + "\n")
-			//	TODO: Handle multiple subtypes / data for images
-
 		}
-
 	}
-	//	Finally
-	return summary, nil
+	// return summary, nil
 
 }
 
@@ -134,6 +121,8 @@ func getPageSummary(url string) (openGraphProps, error) {
 func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//   Access-Control-Allow-Origin: * | Permit cross-origin API calls
 	w.Header().Add("Access-Control-Allow-Origin", "*")
+	//   Content-Type: application/json; charset=utf-8 |	Inform client of response type (JSON)
+	w.Header().Add("Content-Type", "application/json; charset=utf-8")
 
 	//	Get URL query | FormValue handles POST cases
 	//HINT: https://golang.org/pkg/net/http/#Request.FormValue
@@ -151,8 +140,6 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//call getPageSummary() passing the requested URL
 	//and holding on to the returned openGraphProps map
 	//(see type definition above)
-	//	TODO: Use openGraphProps type
-	// _, err := getPageSummary(url)
 	summary, err := getPageSummary(url)
 
 	//if you get back an error, respond to the client
@@ -161,16 +148,11 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest),
 			http.StatusBadRequest)
 	}
-
 	//otherwise, respond by writing the openGrahProps
 	//map as a JSON-encoded object
-	//	TODO
 	encoder := json.NewEncoder(w)
 	if err := encoder.Encode(summary); err != nil {
 		http.Error(w, "error encoding json: "+err.Error(), http.StatusInternalServerError)
 	}
-
-	//   Content-Type: application/json; charset=utf-8 |	Inform client of response type (JSON)
-	w.Header().Add("Content-Type", "application/json; charset=utf-8")
 
 }
