@@ -25,7 +25,6 @@ const openGraphPrefix = "og:"
 type openGraphProps map[string]string
 
 func getPageSummary(url string) (openGraphProps, error) {
-	// func getPageSummary(url string) ([]MetaData, error) {
 	//Get request to the URL, return if err
 	response, err := http.Get(url)
 	if err != nil {
@@ -41,15 +40,15 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//return an error, using the response's .Status
 	//property as the error message
 	if response.StatusCode != http.StatusOK {
+		err = fmt.Errorf("%v", response.StatusCode)
 		return nil, err
-		// fmt.Errorf("Response status code: %d", response.StatusCode)
 	}
 
 	//	Return error if content type != text/html
 	contentType := response.Header.Get("Content-Type")
 	if !strings.HasPrefix(contentType, "text/html") {
+		err = fmt.Errorf("Response was not text/html, instead %s", contentType)
 		return nil, err
-		// fmt.Errorf("Response was not text/html, instead %s", contentType)
 	}
 
 	//create a new openGraphProps map instance to hold
@@ -86,7 +85,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 			return summary, nil
 		}
 
-		//	<Meta>
+		//	Process <Meta> tags
 		if t.Data == "meta" {
 			//	Iterate through tag and extract OG attributes
 			var property, content string
@@ -106,9 +105,6 @@ func getPageSummary(url string) (openGraphProps, error) {
 			//	If data is complete, write to map
 			if property != "" && content != "" {
 				summary[property] = content
-				//	FOR MANUAL TESTING: toString the data
-				fmt.Printf(property + " = " + content + "\n")
-				//	TODO: Handle multiple subtypes / data for images
 			}
 		}
 	}
@@ -139,7 +135,6 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//call getPageSummary() passing the requested URL
 	//and holding on to the returned openGraphProps map
 	//(see type definition above)
-	fmt.Printf("Sending GET req (via getPageSummary): " + url + "\n")
 	summary, err := getPageSummary(url)
 	//if you get back an error, respond to the client
 	//with that error and an http.StatusBadRequest code
@@ -151,7 +146,7 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//map as a JSON-encoded object
 	encoder := json.NewEncoder(w)
 	if err := encoder.Encode(summary); err != nil {
-		http.Error(w, "error encoding json: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "JSON encoding error: "+err.Error(), http.StatusInternalServerError)
 	}
 
 }
