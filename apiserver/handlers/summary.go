@@ -40,21 +40,28 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//if the response StatusCode is >= 400
 	//return an error, using the response's .Status
 	//property as the error message
+	fmt.Printf("Check response type\n")
 	if response.StatusCode != http.StatusOK {
-		log.Fatalf("Response status code: %d\n", response.StatusCode)
+		fmt.Errorf("Response status code: %d", response.StatusCode)
+		// return nil, response.StatusCode
+		// http.Error(w, http.StatusText(http.StatusBadRequest),
+		// http.StatusCode)
+		// // fmt.Printf(response.StatusCode)
+		// log.Fatalf("Response status code: %d\n", response.StatusCode)
+		// // return nil, err.Error()
 	}
 
 	//	Return error if content type != text/html
 	contentType := response.Header.Get("Content-Type")
 	if !strings.HasPrefix(contentType, "text/html") {
-		log.Fatalf("Response was not text/html, instead %s\n", contentType)
+		fmt.Errorf("Response was not text/html, instead %s", contentType)
+		// return nil, http.StatusBadRequest
 	}
 
 	//create a new openGraphProps map instance to hold
 	//the Open Graph properties you find
 	//(see type definition above)
 	summary := make(openGraphProps)
-	// ogErr := nil
 
 	//tokenize the response body's HTML and extract
 	//any Open Graph properties you find into the map,
@@ -66,6 +73,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 
 	//HINTS: https://info344-s17.github.io/tutorials/tokenizing/
 	//https://godoc.org/golang.org/x/net/html
+	fmt.Printf("Begin Scan:")
 	scanner := html.NewTokenizer(response.Body)
 	for {
 		tt := scanner.Next()
@@ -111,7 +119,6 @@ func getPageSummary(url string) (openGraphProps, error) {
 			}
 		}
 	}
-	// return summary, nil
 
 }
 
@@ -135,11 +142,12 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	if len(url) == 0 {
 		http.Error(w, http.StatusText(http.StatusBadRequest),
 			http.StatusBadRequest)
+		return
 	}
-
 	//call getPageSummary() passing the requested URL
 	//and holding on to the returned openGraphProps map
 	//(see type definition above)
+	fmt.Printf("GET REQ:" + url + "\n")
 	summary, err := getPageSummary(url)
 
 	//if you get back an error, respond to the client
