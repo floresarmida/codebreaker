@@ -75,19 +75,19 @@ func getPageSummary(url string) ([]MetaData, error) {
 
 	// scanner := html.NewTokenizer(response.Body)
 	var tags []MetaData
-	z := html.NewTokenizer(response.Body)
+	scanner := html.NewTokenizer(response.Body)
 	for {
-		tt := z.Next()
+		tt := scanner.Next()
 		//	EoF Handling
 		if tt == html.ErrorToken {
-			if z.Err() == io.EOF {
+			if scanner.Err() == io.EOF {
 				return tags, nil
 			}
-			return nil, z.Err()
+			return nil, scanner.Err()
 		}
 
 		//	Read the next open tag
-		t := z.Token()
+		t := scanner.Token()
 		//	Exit once we finish the head (metadata) parent tag
 		if t.Data == "head" && t.Type == html.EndTagToken {
 			return tags, nil
@@ -98,35 +98,27 @@ func getPageSummary(url string) ([]MetaData, error) {
 			//	Iterate through tag and extract OG properties
 			var property, content, tagPrefix string
 			for _, a := range t.Attr {
-
-				switch a.Key {
+				key := a.Key
+				val := a.Val
+				switch key {
 				case "property":
-
-					if strings.HasPrefix(a.Val, openGraphPrefix) {
-						property = a.Val
-						fmt.Printf(property[len(openGraphPrefix):] + "\n")
+					if strings.HasPrefix(val, openGraphPrefix) {
+						property = val
+						// fmt.Printf(property[len(openGraphPrefix):] + "\n")
 					}
-					// fmt.Printf("PROPERTY: " + property + "\n")
-					// property = a.Val
-					// fmt.Printf("PROPERTY: " + property + "\n")
-					// if strings.HasPrefix(property, openGraphPrefix) {
-					// 	fmt.Printf(property[len(openGraphPrefix):] + "\n")
-					// }
 				case "content":
-					content = a.Val
-					fmt.Printf("CONTENT: " + content + "\n")
+					content = val
+					// fmt.Printf("CONTENT: " + content + "\n")
 				}
 			}
-			//	This should have populated name, prop and content
-			// if property == "" {
-			// 	// property = "undef"
-			// 	continue
-			// }
 
-			//	If properties or content are misformatted, skip this meta tag evaluation (corrupt)
+			//	Throw away this tag if the data is misformatted
 			if property == "" || content == "" {
 				continue
 			}
+
+			//	MANUAL TESTING: toString the data
+			fmt.Printf(property + " = " + content + "\n")
 
 			// fmt.Printf(tagPrefix)
 			idx := strings.Index(property, ":")
