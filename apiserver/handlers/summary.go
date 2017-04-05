@@ -2,12 +2,19 @@ package handlers
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"strings"
 
 	"golang.org/x/net/html"
 )
+
+type MetaData struct {
+	Property string // Property attribute without prefix.
+	Content  string // Content attribute. See http://ogp.me/#data_types for a list of content attribute types.
+	Prefix   string
+}
 
 type openGraph struct {
 	Title string `json:"title"`
@@ -22,7 +29,8 @@ const openGraphPrefix = "og:"
 //openGraphProps represents a map of open graph property names and values
 type openGraphProps map[string]string
 
-func getPageSummary(url string) (openGraphProps, error) {
+// func getPageSummary(url string) (openGraphProps, error) {
+func getPageSummary(url string) ([]MetaData, error) {
 	//Get the URL
 	//If there was an error, return it
 	response, err := http.Get(url)
@@ -65,36 +73,71 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//HINTS: https://info344-s17.github.io/tutorials/tokenizing/
 	//https://godoc.org/golang.org/x/net/html
 
-	scanner := html.NewTokenizer(response.Body)
-
+	// scanner := html.NewTokenizer(response.Body)
+	var tags []MetaData
+	z := html.NewTokenizer(response.Body)
 	for {
-		tt := scanner.Next()
-		switch {
-		//	Handle EoF (Friendly, is anticipated)
-		case tt == html.ErrorToken:
-			return nil, nil
-		//	Opening Tags
-		case tt == html.StartTagToken:
-			//	Tag Type
-			tokenType := scanner.Token()
-
-			//	<Meta>	-	Metadata tag
-			if tokenType.Data == "meta" {
-				fmt.Println("We found <Meta> data!")
-				// 	for _, attribute := range tokenType.Attr {
-				//     // if attribute.Key == "property" {
-				//     //     fmt.Println("Found attribute:", attribute.Val)
-				//     //     break
-				//     // }
-				// 		fmt.Println(attribute.Val)
+		tt := z.Next()
+		//	EoF Handling
+		if tt == html.ErrorToken {
+			if z.Err() == io.EOF {
+				return tags, nil
 			}
-
-			//	<Body>	-	Signifies end of metadata
-			if tokenType.Data == "body" {
-				fmt.Println("Encountered <Body>, not parsing!")
-				return nil, nil
-			}
+			return nil, z.Err()
 		}
+
+		//	Read the next open tag
+		t := z.Token()
+		//	Exit once we finish the head (metadata) parent tag
+		if t.Data == "head" && t.Type == html.EndTagToken {
+			return tags, nil
+		}
+
+		//	<Meta>
+		if t.Data == "meta" {
+			//	Iterate through tag and extract OG properties
+			var property, content, tagPrefix string
+			for _, a := range t.Attr {
+
+				switch a.Key {
+				case "property":
+
+					if strings.HasPrefix(a.Val, openGraphPrefix) {
+						property = a.Val
+						fmt.Printf(property[len(openGraphPrefix):] + "\n")
+					}
+					// fmt.Printf("PROPERTY: " + property + "\n")
+					// property = a.Val
+					// fmt.Printf("PROPERTY: " + property + "\n")
+					// if strings.HasPrefix(property, openGraphPrefix) {
+					// 	fmt.Printf(property[len(openGraphPrefix):] + "\n")
+					// }
+				case "content":
+					content = a.Val
+					fmt.Printf("CONTENT: " + content + "\n")
+				}
+			}
+			//	This should have populated name, prop and content
+			// if property == "" {
+			// 	// property = "undef"
+			// 	continue
+			// }
+
+			//	If properties or content are misformatted, skip this meta tag evaluation (corrupt)
+			if property == "" || content == "" {
+				continue
+			}
+
+			// fmt.Printf(tagPrefix)
+			idx := strings.Index(property, ":")
+			if idx == -1 {
+				continue
+			}
+			tagPrefix = property[:idx]
+
+			tags = append(tags, MetaData{property[len(tagPrefix+":"):], content, tagPrefix})
+		}
+
 	}
 
 	return nil, nil
