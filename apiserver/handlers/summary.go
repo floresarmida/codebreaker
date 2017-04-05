@@ -66,26 +66,35 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//https://godoc.org/golang.org/x/net/html
 
 	//	Ripped from PageTitle main.go
-	tokenizer := html.NewTokenizer(response.Body)
+	scanner := html.NewTokenizer(response.Body)
 	for {
-		tokenType := tokenizer.Next()
+		tag := scanner.Next()
+		switch tag {
 		//	Check for err/EoF
-		if tokenType == html.ErrorToken {
-			log.Fatalf("Error tokenizing HTML: %v", tokenizer.Err())
-		}
-		//For opening tags
-		if tokenType == html.StartTagToken {
-			token := tokenizer.Token()
+		case html.ErrorToken:
+			log.Fatalf("Error tokenizing HTML: %v", scanner.Err())
+		//	Process Opening Tags
+		case html.StartTagToken:
+			token := scanner.Token()
 			if "title" == token.Data {
 				//	The next token should be the page title
-				tokenType = tokenizer.Next()
+				tag = scanner.Next()
 				// Verify it's actually text
-				if tokenType == html.TextToken {
+				if tag == html.TextToken {
 					// Report title, break loop
-					fmt.Println(tokenizer.Token().Data)
+					fmt.Println(scanner.Token().Data)
 					break
 				}
 			}
+
+		}
+
+		// if tag == html.ErrorToken {
+		// 	log.Fatalf("Error tokenizing HTML: %v", scanner.Err())
+		// }
+
+		//For opening tags
+		if tag == html.StartTagToken {
 		}
 	}
 	// fmt.Printf()
