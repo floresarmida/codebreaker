@@ -65,39 +65,37 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//HINTS: https://info344-s17.github.io/tutorials/tokenizing/
 	//https://godoc.org/golang.org/x/net/html
 
-	//	Ripped from PageTitle main.go
 	scanner := html.NewTokenizer(response.Body)
+
 	for {
-		tag := scanner.Next()
-		switch tag {
-		//	Check for err/EoF
-		case html.ErrorToken:
-			log.Fatalf("Error tokenizing HTML: %v", scanner.Err())
-		//	Process Opening Tags
-		case html.StartTagToken:
-			token := scanner.Token()
-			if "title" == token.Data {
-				//	The next token should be the page title
-				tag = scanner.Next()
-				// Verify it's actually text
-				if tag == html.TextToken {
-					// Report title, break loop
-					fmt.Println(scanner.Token().Data)
-					break
-				}
+		tt := scanner.Next()
+		switch {
+		//	Handle EoF (Friendly, is anticipated)
+		case tt == html.ErrorToken:
+			return nil, nil
+		//	Opening Tags
+		case tt == html.StartTagToken:
+			//	Tag Type
+			tokenType := scanner.Token()
+
+			//	<Meta>	-	Metadata tag
+			if tokenType.Data == "meta" {
+				fmt.Println("We found <Meta> data!")
+				// 	for _, attribute := range tokenType.Attr {
+				//     // if attribute.Key == "property" {
+				//     //     fmt.Println("Found attribute:", attribute.Val)
+				//     //     break
+				//     // }
+				// 		fmt.Println(attribute.Val)
 			}
 
-		}
-
-		// if tag == html.ErrorToken {
-		// 	log.Fatalf("Error tokenizing HTML: %v", scanner.Err())
-		// }
-
-		//For opening tags
-		if tag == html.StartTagToken {
+			//	<Body>	-	Signifies end of metadata
+			if tokenType.Data == "body" {
+				fmt.Println("Encountered <Body>, not parsing!")
+				return nil, nil
+			}
 		}
 	}
-	// fmt.Printf()
 
 	return nil, nil
 
