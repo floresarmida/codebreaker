@@ -13,6 +13,8 @@ const store = createStore(
   //  Root Reducer
   rootReducer,
   //  Enable DevTools in dev node env
+  //  https://github.com/zalmoxisus/redux-devtools-extension
+  //  https://medium.com/@zalmoxis/improve-your-development-workflow-with-redux-devtools-extension-f0379227ff83
   composeWithDevTools(
   //  Apply thunkk middleware to enable async action dispatches
   applyMiddleware(thunk)

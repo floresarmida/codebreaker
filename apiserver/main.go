@@ -9,8 +9,8 @@ import (
 	"github.com/info344-s17/challenges-RcKeller/apiserver/handlers"
 )
 
-const defaultPort = "8080"      //	Originally "80"
-const defaultHost = "127.0.0.1" //	Or Localhost?
+const defaultPort = "80" //	Originally "80"
+const defaultHost = ""   //	Or Localhost?
 
 const (
 	apiRoot    = "/v1/"
