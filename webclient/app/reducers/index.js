@@ -7,7 +7,7 @@ const initial = {
 
 const chat = (state = initial, action) => {
   switch (action.type) {
-    case 'ADD_LINK':
+    case 'ADD_LINK_SUCCESS':
       return { ...state,
         messages: [
           ...state.messages, {

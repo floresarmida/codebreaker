@@ -20,9 +20,9 @@ export const addMessage = (data) => {
   }
 }
 
-export const addLinkAction = (data) => {  //  THUNK
+export const addLinkSuccess = (data) => {  //  THUNK
   return {
-    type: 'ADD_LINK',
+    type: 'ADD_LINK_SUCCESS',
     id: uuid(),
     data
   }
@@ -36,13 +36,11 @@ export const addLink = (data) => {  //  THUNK
     // first of all, let's do the optimistic UI update - we need to
     // dispatch the old synchronous action object, using the renamed
     // action creator
-    dispatch(addLinkAction(data))
+    // dispatch(addLinkAction(data)) //Loading
 
     // now that the Store has been notified of the new todo item, we
     // should also notify our server - we'll use here ES6 fetch
     // function to post the data
-    //  PLACEHOLDER
-    console.log('Data:', data)
     let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
     let query = `?url=${data.url}`
     let request = target + query
@@ -50,19 +48,19 @@ export const addLink = (data) => {  //  THUNK
     fetch(request, {
       method: 'get'
     }).then(response => {
-      console.log('resp', response)
-      let ret = response.json()
-      console.log("ret", ret)
-      // return response.json()
+      return response.json()
+    }).then(data => {
+      console.log(data)
+      dispatch(addLinkSuccess(data))
       // you should probably get a real id for your new todo item here,
 // and update your store, but we'll leave that to you
     }).catch(err => {
       // Error: handle it the way you like, undoing the optimistic update,
-//  showing a "out of sync" message, etc.
+      //  showing a "out of sync" message, etc.
       console.error(err)
     })
-  // what you return here gets returned by the dispatch function that
-  // used this action creator
+    // what you return here gets returned by the dispatch function that
+    // used this action creator
     return null
   }
 }
