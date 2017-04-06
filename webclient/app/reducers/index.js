@@ -2,15 +2,7 @@ import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
 const initial = {
-  messages: [],
-  api: {
-    protocol: 'http://',
-    host: '138.68.249.21',  // Name: info-ocean
-    version: 'v1',
-    services: {
-      summary: 'summary'
-    }
-  }
+  messages: []
 }
 
 const chat = (state = initial, action) => {

@@ -10,7 +10,7 @@ class Form extends Component {
     const { handleSubmit, pristine, reset, submitting } = this.props
     return (
       <form onSubmit={handleSubmit}>
-        <Field name='URL' component={TextField} hintText='http://ogp.me/'
+        <Field name='url' component={TextField} hintText='http://ogp.me/'
           validate={required}
       />
         <button type='submit' disabled={submitting}>Submit</button>
