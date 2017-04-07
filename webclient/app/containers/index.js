@@ -7,16 +7,18 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import Theme from '../theme'
 const muiTheme = getMuiTheme(Theme)
 
-//  Tap Event Plugin Injection  (required, will remove in @next distro)
+//  Tap Event Plugin Injection  (required, will remove in @next distro of material-ui)
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
 import AppBar from 'material-ui/AppBar'
 import Drawer from 'material-ui/Drawer'
 
-import Nav from './Nav'
+//  Containers
 import Chat from './Chat'
-import Footer from './Footer'
+//  Components
+import Nav from '../components/Nav'
+import Footer from '../components/Footer'
 
 class App extends React.Component {
   constructor (props) {

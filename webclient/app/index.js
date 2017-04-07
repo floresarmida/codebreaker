@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 //    Import App
-import App from './components/'
+import App from './containers/'
 
 //    RENDER
 render((

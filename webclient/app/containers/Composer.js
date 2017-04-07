@@ -9,7 +9,7 @@ let Composer = ({ dispatch }) => {
   return (
     <div>
       <LinkShareForm onSubmit={(e) => dispatch(uploadLink(e))} />
-      <div>Message box here</div>
+      {/* <div>TODO: Message box here</div> */}
     </div>
   )
 }

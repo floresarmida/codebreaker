@@ -7,12 +7,19 @@ const initial = {
 
 const chat = (state = initial, action) => {
   switch (action.type) {
+    case 'ADD_MESSAGE':
+      return { ...state,
+        messages: [
+          ...state.messages, {
+            ...action.data
+          }
+        ]}
     case 'ADD_OG':
       return { ...state,
         messages: [
           ...state.messages, {
             id: action.id,
-            data: action.data
+            og: action.data
           }
         ]}
     default:
