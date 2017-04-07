@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 
@@ -21,7 +20,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//Get request to the URL, return if err
 	response, err := http.Get(url)
 	if err != nil {
-		log.Fatalf("Error fetching URL: %v\n", err)
+		return nil, err
 	}
 	//	Guarentee closure of stream
 	defer response.Body.Close()
@@ -92,7 +91,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 
 }
 
-//	SummaryHandler | Given a URL, returns OpenGraph props w/ JSON encoding
+//SummaryHandler given a URL, returns OpenGraph props w/ JSON encoding
 func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//   Access-Control-Allow-Origin: * | Permit cross-origin API calls
 	w.Header().Add("Access-Control-Allow-Origin", "*")

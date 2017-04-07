@@ -20,47 +20,37 @@ export const addMessage = (data) => {
   }
 }
 
-export const addLinkSuccess = (data) => {  //  THUNK
+export const addOG = (data) => {  //  THUNK
   return {
-    type: 'ADD_LINK_SUCCESS',
+    type: 'ADD_OG',
     id: uuid(),
     data
   }
 }
 
-export const addLink = (data) => {  //  THUNK
+export const uploadLink = (data) => {  //  THUNK
   return function (dispatch) {
-    // here starts the code that actually gets executed when the
-    //  addTodo action creator is dispatched
-
     // first of all, let's do the optimistic UI update - we need to
     // dispatch the old synchronous action object, using the renamed
     // action creator
+    //  Inform UI that an update is beginning/processing
     // dispatch(addLinkAction(data)) //Loading
 
-    // now that the Store has been notified of the new todo item, we
-    // should also notify our server - we'll use here ES6 fetch
-    // function to post the data
     let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
     let query = `?url=${data.url}`
     let request = target + query
-    console.log(request)
     fetch(request, {
       method: 'get'
     }).then(response => {
       return response.json()
     }).then(data => {
-      console.log(data)
-      dispatch(addLinkSuccess(data))
-      // you should probably get a real id for your new todo item here,
-// and update your store, but we'll leave that to you
+      //  Assuming we got OG data
+      dispatch(addOG(data))
     }).catch(err => {
-      // Error: handle it the way you like, undoing the optimistic update,
-      //  showing a "out of sync" message, etc.
+      //  TODO: Dispatch an error toast
       console.error(err)
     })
-    // what you return here gets returned by the dispatch function that
-    // used this action creator
+    // what you return here gets returned by the dispatch function that used this action creator
     return null
   }
 }
