@@ -30,17 +30,16 @@ export const addOG = (data) => {  //  THUNK
 
 export const submitMessage = (data) => {  //  THUNK
   return function (dispatch) {
-    // first of all, let's do the optimistic UI update - we need to
-    // dispatch the old synchronous action object, using the renamed
-    // action creator
-    //  Inform UI that an update is beginning/processing
-    // dispatch(addLinkAction(data)) //Loading
+    //  TODO: Dispatch a log for this event loading like dispatch(addLinkAction(data))
+    let submission = data.composer
     let message = false
+    //  User submitted normal text
     if (message) {
       //  TODO: Check for link vs raw text message
     } else {
+    //  User submitted a link to OG content
       let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
-      let query = `?url=${data.url}`
+      let query = `?url=${submission}`
       let request = target + query
       fetch(request, {
         method: 'get'
