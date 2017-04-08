@@ -31,7 +31,6 @@ class App extends React.Component {
     }
     this.handleResize = this.handleResize.bind(this)
     this.toggleNav = this.toggleNav.bind(this)
-    this.handleCall = this.handleCall.bind(this)
   }
   componentWillMount () {
     window.addEventListener('resize', this.handleResize)
@@ -45,13 +44,8 @@ class App extends React.Component {
     this.setState({ mobile, nav: !mobile })
   }
   toggleNav () {
-    let nav = !this.state.nav
-    this.setState({ nav })
-  }
-  //  CRUD ops (very crude traversal, no redux at this point)
-  handleCall (data) {
-    console.log('Called addContent')
-    console.log('Received call', data)
+    // let nav = !this.state.nav
+    this.setState({ nav: !this.state.nav })
   }
 
   render () {

@@ -28,28 +28,32 @@ export const addOG = (data) => {  //  THUNK
   }
 }
 
-export const uploadLink = (data) => {  //  THUNK
+export const submitMessage = (data) => {  //  THUNK
   return function (dispatch) {
     // first of all, let's do the optimistic UI update - we need to
     // dispatch the old synchronous action object, using the renamed
     // action creator
     //  Inform UI that an update is beginning/processing
     // dispatch(addLinkAction(data)) //Loading
-
-    let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
-    let query = `?url=${data.url}`
-    let request = target + query
-    fetch(request, {
-      method: 'get'
-    }).then(response => {
-      return response.json()
-    }).then(data => {
+    let message = false
+    if (message) {
+      //  TODO: Check for link vs raw text message
+    } else {
+      let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
+      let query = `?url=${data.url}`
+      let request = target + query
+      fetch(request, {
+        method: 'get'
+      }).then(response => {
+        return response.json()
+      }).then(data => {
       //  Assuming we got OG data
-      dispatch(addOG(data))
-    }).catch(err => {
+        dispatch(addOG(data))
+      }).catch(err => {
       //  TODO: Dispatch an error toast
-      console.error(err)
-    })
+        console.error(err)
+      })
+    }
     // what you return here gets returned by the dispatch function that used this action creator
     return null
   }

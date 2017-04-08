@@ -1,14 +1,14 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import { uploadLink } from '../actions'
+import { submitMessage } from '../actions'
 
-import LinkShareForm from '../components/LinkShareForm'
+import MessageBox from '../components/MessageBox'
 
 let Composer = ({ dispatch }) => {
   return (
     <div>
-      <LinkShareForm onSubmit={(e) => dispatch(uploadLink(e))} />
+      <MessageBox onSubmit={(e) => dispatch(submitMessage(e))} />
       {/* <div>TODO: Message box here</div> */}
     </div>
   )
