@@ -1,10 +1,10 @@
 import React from 'react'
 
-const ChatMessages = ({messages}) => (
+const ChatMessage = ({messages}) => (
   <article>
     <section>
         Chat Component here
     </section>
   </article>
 )
-export default ChatMessages
+export default ChatMessage

@@ -17,8 +17,7 @@ import Drawer from 'material-ui/Drawer'
 //  Containers
 import Chat from './Chat'
 //  Components
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
+import Nav from './Nav'
 
 class App extends React.Component {
   constructor (props) {
@@ -30,7 +29,7 @@ class App extends React.Component {
       stream: []
     }
     this.handleResize = this.handleResize.bind(this)
-    this.toggleNav = this.toggleNav.bind(this)
+    this.toggleNav = () => this.setState({ nav: !this.state.nav })
   }
   componentWillMount () {
     window.addEventListener('resize', this.handleResize)
@@ -42,10 +41,6 @@ class App extends React.Component {
   handleResize () {
     let mobile = window.innerWidth <= 1024
     this.setState({ mobile, nav: !mobile })
-  }
-  toggleNav () {
-    // let nav = !this.state.nav
-    this.setState({ nav: !this.state.nav })
   }
 
   render () {
@@ -64,15 +59,12 @@ class App extends React.Component {
             <Nav handleCall={this.handleCall} />
           </Drawer>
           <div id='body' style={{paddingLeft: push}}>
-            <div id='content'>
-              <AppBar
-                title='ZipCode API'
-                onLeftIconButtonTouchTap={this.toggleNav}
-                zDepth={2}
+            <AppBar
+              title='ZipCode API'
+              onLeftIconButtonTouchTap={this.toggleNav}
+              zDepth={2}
               />
-              <Chat />
-            </div>
-            <Footer />
+            <Chat />
           </div>
         </div>
       </MuiThemeProvider>

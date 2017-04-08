@@ -1,22 +1,19 @@
 import React from 'react'
-// import ChatMessages from '../components/ChatMessages'
 
 import { connect } from 'react-redux'
 import { submitMessage } from '../actions'
 
-import MessageBox from '../components/MessageBox'
+import ChatMessage from '../components/ChatMessage'
+import Composer from '../components/Composer'
 
 const ChatContainer = ({messages, submit}) => (
   <div>
     <div id='content'>
-      <article>
-        <section>
-          Chat Component here (map state)
-        </section>
-      </article>
+      {/* TODO: Map chatmessages here */}
+      <ChatMessage />
     </div>
     <footer>
-      <MessageBox onSubmit={(e) => submit(e)} />
+      <Composer onSubmit={(e) => submit(e)} />
     </footer>
   </div>
 )
