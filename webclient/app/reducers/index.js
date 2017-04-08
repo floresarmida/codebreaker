@@ -3,6 +3,10 @@ import { reducer as formReducer } from 'redux-form'
 
 const initial = {
   messages: []
+  //  TODO: Multiple chat branches in state
+  // 'MAIN': {
+  //   messages: []
+  // }
 }
 
 const chat = (state = initial, action) => {

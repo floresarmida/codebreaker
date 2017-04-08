@@ -20,6 +20,7 @@ export const addMessage = (data) => {
   }
 }
 export const addOG = (data) => {  //  THUNK
+  console.log('OG data', data)
   return {
     type: 'ADD_OG',
     id: uuid(),
@@ -28,9 +29,11 @@ export const addOG = (data) => {  //  THUNK
 }
 
 export const submitMessage = (data) => {  //  THUNK
+  console.log('SUBMIT')
   return function (dispatch) {
     //  TODO: Dispatch a log for this event loading like dispatch(addLinkAction(data))
     let submission = data.composer
+    console.log('dispatch submit message', submission)
     //  Normal Text Submission
     if (!submission.startsWith('http')) {  // URL check
       //  TODO: Check for link vs raw text message
@@ -40,6 +43,7 @@ export const submitMessage = (data) => {  //  THUNK
       let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
       let query = `?url=${submission}`
       let request = target + query
+      console.log('Request', request)
       fetch(request, {
         method: 'get'
       }).then(response => {

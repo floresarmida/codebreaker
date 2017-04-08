@@ -7,32 +7,22 @@ import ChatMessage from '../components/ChatMessage'
 import Composer from '../components/Composer'
 
 const ChatContainer = ({messages, submit}) => (
-  // <div>
-    <div id='content'>
-      {/* TODO: Map chatmessages here */}
-      <ChatMessage />
-    {/* </div> */}
+  <div id='chat'>
+    {/* TODO: Map chatmessages here */}
+    <ChatMessage />
     <footer>
       <Composer onSubmit={(e) => submit(e)} />
     </footer>
   </div>
 )
 
-//  Change chat messages received in state based on room
-const getChatMessages = (messages, room) => {
-  switch (room) {
-    case 'MAIN':
-      return messages
-    // TODO: case 'PRIVATE CHAT'':
-    //   return todos.filter(t => t.completed)
-  }
-}
-
 const mapStateToProps = (state) => {
   let room = 'MAIN'
   //  TODO: State check of the selectedRoom in state
-  return {
-    messages: getChatMessages(state.chat.messages, room)
+  switch (room) {
+    case 'MAIN':
+      return state.chat // .messages
+      // return state.chat[room].messages
   }
 }
 

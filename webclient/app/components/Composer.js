@@ -16,7 +16,7 @@ class Form extends Component {
       <form onSubmit={handleSubmit}>
         <Field name='composer' component={TextField}
           hintText='Say something!'
-          style={{width: '90%'}}
+          fullWidth
       />
         <RaisedButton type='submit' icon={<Send />}
           secondary disabled={pristine || submitting}
