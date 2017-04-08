@@ -38,6 +38,7 @@ export const submitMessage = (data) => {  //  THUNK
     if (!submission.startsWith('http')) {  // URL check
       //  TODO: Check for link vs raw text message
       console.log('Non-link (OpenGraph) content submitted. This client has not had raw messaging implemented yet')
+      dispatch(addMessage(submission))
     } else {
     //  User submitted a link to OG content
       let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`

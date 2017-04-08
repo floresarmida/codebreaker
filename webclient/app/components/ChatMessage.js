@@ -11,7 +11,7 @@ import React from 'react'
 // "url": "http://ogp.me/"
 // }
 
-import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import {Card, CardActions, CardMedia, CardTitle, CardHeader, CardText} from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 import Link from 'material-ui/svg-icons/content/link'
 
@@ -32,14 +32,11 @@ const ChatMessage = ({message}) => (
           </a>
         </CardActions>
       </div>
-    : <CardTitle title='Card title' subtitle='Card subtitle' />
+    : <div>
+      <CardHeader title='User Name' subtitle='Timestamp' />
+      <CardText>{message.text}</CardText>
+    </div>
     }
-    <CardText>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-      Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-      Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-    </CardText>
   </Card>
 )
 export default ChatMessage

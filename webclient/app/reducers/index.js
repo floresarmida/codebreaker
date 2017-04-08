@@ -15,7 +15,7 @@ const chat = (state = initial, action) => {
       return { ...state,
         messages: [
           ...state.messages, {
-            ...action.data
+            text: action.data
           }
         ]}
     case 'ADD_OG':
