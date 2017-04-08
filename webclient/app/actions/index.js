@@ -19,7 +19,6 @@ export const addMessage = (data) => {
     data
   }
 }
-
 export const addOG = (data) => {  //  THUNK
   return {
     type: 'ADD_OG',
@@ -32,10 +31,10 @@ export const submitMessage = (data) => {  //  THUNK
   return function (dispatch) {
     //  TODO: Dispatch a log for this event loading like dispatch(addLinkAction(data))
     let submission = data.composer
-    let message = false
-    //  User submitted normal text
-    if (message) {
+    //  Normal Text Submission
+    if (!submission.startsWith('http')) {  // URL check
       //  TODO: Check for link vs raw text message
+      console.log('Non-link (OpenGraph) content submitted. This client has not had raw messaging implemented yet')
     } else {
     //  User submitted a link to OG content
       let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
