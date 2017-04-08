@@ -6,9 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 
 import Send from 'material-ui/svg-icons/content/send'
 
-// const required = (val) => (val == null ? 'Required' : undefined)
-
 class Form extends Component {
+  // const required = (val) => (val == null ? 'Required' : undefined)
   render () {
     const { handleSubmit, pristine, submitting } = this.props
     // const { handleSubmit, pristine, reset, submitting } = this.props

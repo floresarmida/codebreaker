@@ -1,10 +1,45 @@
 import React from 'react'
 
-const ChatMessage = ({messages}) => (
-  <article>
-    <section>
-        Chat Component here
-    </section>
-  </article>
+// {
+// "description": "The Open Graph protocol enables any web page to become a rich object in a social graph.",
+// "image": "http://ogp.me/logo.png",
+// "image:height": "300",
+// "image:type": "image/png",
+// "image:width": "300",
+// "title": "Open Graph protocol",
+// "type": "website",
+// "url": "http://ogp.me/"
+// }
+
+import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import FlatButton from 'material-ui/FlatButton'
+import Link from 'material-ui/svg-icons/content/link'
+
+//  Title, type, image, source url | description
+const ChatMessage = ({message}) => (
+  <Card>
+    {message.og
+      ? <div>
+        <CardMedia
+          overlay={<CardTitle title={message.og.title} subtitle={message.og.description ? message.og.description : 'Shared Link'} />}
+        >
+          <img src={message.og.image} />
+        </CardMedia>
+        <CardActions>
+          <a href={message.og.url} target='_blank'>
+            <FlatButton label='Link'
+              primary icon={<Link />} />
+          </a>
+        </CardActions>
+      </div>
+    : <CardTitle title='Card title' subtitle='Card subtitle' />
+    }
+    <CardText>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+      Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+      Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+    </CardText>
+  </Card>
 )
 export default ChatMessage

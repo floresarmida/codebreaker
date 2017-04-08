@@ -6,10 +6,11 @@ import { submitMessage } from '../actions'
 import ChatMessage from '../components/ChatMessage'
 import Composer from '../components/Composer'
 
-const ChatContainer = ({messages, submit}) => (
+const ChatContainer = ({messages = [], submit}) => (
   <div id='chat'>
-    {/* TODO: Map chatmessages here */}
-    <ChatMessage />
+    {messages.map((m, i) => (
+      <ChatMessage key={i} message={m} />
+    ))}
     <footer>
       <Composer onSubmit={(e) => submit(e)} />
     </footer>
