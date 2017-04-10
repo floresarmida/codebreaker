@@ -29,7 +29,11 @@ const Theme = {
     color: '#388e3c'
   },
   listItem: {
-    leftIconColor: '#2196f3'
+    secondaryTextColor: 'black'
+    // leftIconColor: '#2196f3'
+  },
+  avatar: {
+    backgroundColor: 'inherit'
   }
 }
 export default Theme

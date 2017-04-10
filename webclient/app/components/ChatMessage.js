@@ -1,23 +1,12 @@
 import React from 'react'
 
-// {
-// "description": "The Open Graph protocol enables any web page to become a rich object in a social graph.",
-// "image": "http://ogp.me/logo.png",
-// "image:height": "300",
-// "image:type": "image/png",
-// "image:width": "300",
-// "title": "Open Graph protocol",
-// "type": "website",
-// "url": "http://ogp.me/"
-// }
-
 import {Card, CardActions, CardMedia, CardTitle, CardHeader, CardText} from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 import Link from 'material-ui/svg-icons/content/link'
 
-//  Title, type, image, source url | description
+//  OG Props: Title, Type, Image, Source Url | Optional (but common): description
 const ChatMessage = ({message}) => (
-  <Card>
+  <Card style={{margin: 16}}>
     {message.og
       ? <div>
         <CardMedia
@@ -33,8 +22,13 @@ const ChatMessage = ({message}) => (
         </CardActions>
       </div>
     : <div>
-      <CardHeader title='User Name' subtitle='Timestamp' />
-      <CardText>{message.text}</CardText>
+      <CardHeader title='User Name' subtitle='Timestamp'
+        style={{padding: '8px 16px'}} />
+      <CardText
+        style={{padding: '8px 16px'}}
+      >
+        {message.text}
+      </CardText>
     </div>
     }
   </Card>
