@@ -19,7 +19,8 @@ const chat = (state = initialChat, action) => {
         messages: [
           ...state.messages, {
             id: action.id,
-            og: action.data
+            og: action.data,
+            source: action.source
           }
         ]}
     default:

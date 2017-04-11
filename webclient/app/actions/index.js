@@ -20,11 +20,12 @@ export const addMessage = (data) => {
     data
   }
 }
-export const addOG = (data) => {
+export const addOG = (data, source) => {
   return {
     type: 'ADD_OG',
     id: uuid(),
-    data
+    data,
+    source
   }
 }
 
@@ -60,7 +61,7 @@ export const submitMessage = (data) => {  //  THUNK
       }).then(response => {
         return response.json()
       }).then(data => {
-        dispatch(addOG(data))
+        dispatch(addOG(data, submission))
       }).catch(err => {
         dispatch(openModal(err))
         console.error(err)

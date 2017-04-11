@@ -16,7 +16,7 @@ const ChatContainer = ({messages = [], submit}) => (
       {messages.map((m, i) => (
         //  Conditional render based on content type
         <div key={i}>
-          {m.og && <OpenGraphMessage message={m} />}
+          {m.og && <OpenGraphMessage {...m.og} source={m.source} />}
           {m.message && <ChatMessage message={m.message} />}
         </div>
 
