@@ -20,6 +20,9 @@ const Theme = {
     clockCircleColor: 'rgba(0,0,0,0.07)',
     shadowColor: 'rgba(0,0,0,1)'
   },
+  appBar: {
+    position: 'fixed'
+  },
   drawer: {
     width: 300,
     padding: 0,

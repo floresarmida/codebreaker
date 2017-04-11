@@ -23,19 +23,19 @@ html {
   height: calc(100% - 64px);
   overflow-y: auto;
   margin: 0 auto;
-  padding-bottom: 72px;
+  padding: 72px 16px;
 }
 footer {
   position: fixed;
   bottom: 0;
   width: 100vw;
-  padding: 0 16px;
-  background-color: rgb(69, 90, 100);
-  color: white;
+  form {
+    padding: 0 16px;
+  }
 }
 @media only screen and (min-width: 1024px) {
   footer {
-    width: 960px;
+    width: calc(100vw - 300px);
   }
 }
 

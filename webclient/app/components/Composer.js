@@ -15,13 +15,18 @@ class Form extends Component {
         <Field name='composer' component={TextField}
           floatingLabelText='Say something!'
           floatingLabelStyle={{color: 'rgb(33, 150, 243)'}}
-          style={{display: 'inline-block'}}
-          // fullWidth
-          multiLine rowsMax={2}
+          style={{
+            width: 'calc(100% - 100px)'
+          }}
+          // multiLine rowsMax={2}
         />
         <RaisedButton type='submit' icon={<Send />}
           secondary disabled={pristine || submitting}
-          style={{margin: 8, display: 'inline-block', verticalAlign: 'bottom'}}
+          style={{
+            marginBottom: 8,
+            display: 'inline-block',
+            verticalAlign: 'bottom'
+          }}
         />
       </form>
     )

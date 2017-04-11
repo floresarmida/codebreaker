@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import {CardHeader, CardMedia, CardText} from 'material-ui/Card'
 import Avatar from 'material-ui/Avatar'
 import {List, ListItem} from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
-import Divider from 'material-ui/Divider'
+import TestCases from '../components/TestCases'
 
-const list = [{
+const techStack = [{
   title: 'React.JS',
   subtitle: 'Front-End Framework',
   avatar: 'https://s3.amazonaws.com/media-p.slid.es/uploads/alexanderfarennikov/images/1198519/reactjs.png'
@@ -36,7 +36,10 @@ const list = [{
 const Nav = () => (
   <div>
     <CardMedia
-      overlay={<CardHeader title='Deploying to the Cloud' subtitle='Slouch v0.2 - Ryan Keller' />}
+      overlay={<CardHeader style={{padding: 8}}
+        title='Deploying to the Cloud'
+        subtitle='Slouch v0.3 by Keller'
+      />}
     >
       <img src='https://domenicoluciani.com/assets/images/covers/gopher.jpg' />
     </CardMedia>
@@ -44,31 +47,28 @@ const Nav = () => (
       Overview
     </Subheader>
     <CardText>
-      Slouch Chat is the foundation for INFO 344's final deliverable - a fully functional slack clone. This version (v0.2) fulfils the core requirements for the Cloud Deployment assignment, but I've also laid the foundation for a highly scalable application.
+      Slouch Chat is the foundation for INFO 344's final deliverable - a fully functional slack clone. This version (v0.3) fulfils the core requirements for the Cloud Deployment assignment, and lays the foundation for the final deliverable.
     </CardText>
     <List>
+      <Subheader>Location</Subheader>
+      <ListItem disabled
+        primaryText='Client-Side'
+        secondaryText='138.68.245.192'
+      />
+      <ListItem disabled
+        primaryText='Back-End'
+        secondaryText='138.68.249.21'
+      />
       <Subheader>Technology Stack</Subheader>
-      {list.map((item, i) => (
+      {techStack.map((item, i) => (
         <ListItem key={i} disabled
-          primaryText={item.title}
+          primaryText={<b>{item.title}</b>}
           secondaryText={item.subtitle}
           leftAvatar={<Avatar src={item.avatar} />}
         />
       ))}
     </List>
-    <Subheader>
-        Key Facts:
-    </Subheader>
-    <CardText>
-      <ul>
-        <li>
-          <b>API Host:</b> http://138.68.249.21/
-        </li>
-        <li>
-          <b>WebClient Host:</b> http://138.68.245.192/
-        </li>
-      </ul>
-    </CardText>
+    <TestCases />
   </div>
 )
 

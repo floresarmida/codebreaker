@@ -55,7 +55,7 @@ class App extends React.Component {
             <AppBar
               title='Slouch Chat'
               onLeftIconButtonTouchTap={this.toggleNav}
-              zDepth={2}
+              style={Theme.appBar} zDepth={2}
               />
             <Chat />
           </div>
