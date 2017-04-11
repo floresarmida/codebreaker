@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch'
-var uuid = require('uuid4')
+var uuid = require('uuid4') //  unique indexes for concurrency
+import {reset} from 'redux-form'  //  Action to reset controlled forms
 
 //  Sample summary query:
 //  http://138.68.249.21/v1/summary?url=http://ogp.me/
@@ -19,7 +20,7 @@ export const addMessage = (data) => {
     data
   }
 }
-export const addOG = (data) => {  //  THUNK
+export const addOG = (data) => {
   return {
     type: 'ADD_OG',
     id: uuid(),
@@ -45,29 +46,27 @@ export const submitMessage = (data) => {  //  THUNK
     //  TODO: Dispatch a log for this event loading like dispatch(addLinkAction(data))
     let submission = data.composer
     //  Normal Text Submission
-    if (!submission.startsWith('http')) {  // URL check
-      //  TODO: Check for link vs raw text message
+    if (!submission.startsWith('http')) {
       dispatch(addMessage(submission))
     } else {
-    //  User submitted a link to OG content
+    //  Link submission (eval props via OG API)
       let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
       let query = `?url=${submission}`
       let request = target + query
-      //  TODO: Remove debug statement
-      console.log('Request', request)
+
+      console.log('GET:', request)
       fetch(request, {
         method: 'get'
       }).then(response => {
         return response.json()
       }).then(data => {
-      //  Assuming we got OG data
         dispatch(addOG(data))
       }).catch(err => {
-      //  TODO: Dispatch an error toast
         dispatch(openModal(err))
-        // console.error('Error encounted in fetch:', err)
+        console.error(err)
       })
     }
+    dispatch(reset('composer')) //  Form reset
     // what you return here gets returned by the dispatch function that used this action creator
     return null
   }

@@ -6,10 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Send from 'material-ui/svg-icons/content/send'
 
 class Form extends Component {
-  // const required = (val) => (val == null ? 'Required' : undefined)
   render () {
     const { handleSubmit, pristine, submitting } = this.props
-    // const { handleSubmit, pristine, reset, submitting } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <Field name='composer' component={TextField}
@@ -18,7 +16,6 @@ class Form extends Component {
           style={{
             width: 'calc(100% - 100px)'
           }}
-          // multiLine rowsMax={2}
         />
         <RaisedButton type='submit' icon={<Send />}
           secondary disabled={pristine || submitting}
@@ -33,9 +30,7 @@ class Form extends Component {
   }
 }
 
-// Decorate the form component
 let MessageBox = reduxForm({
-  form: 'composer' // a unique name for this form
+  form: 'composer'  // Identifier
 })(Form)
-
 export default MessageBox

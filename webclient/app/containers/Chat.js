@@ -2,14 +2,14 @@ import React from 'react'
 
 import { connect } from 'react-redux'
 import { submitMessage } from '../actions'
-import {reset} from 'redux-form'
+//  Reset is called by submission (async via thunk)
 
 import ChatMessage from '../components/ChatMessage'
 import Composer from '../components/Composer'
 
 import Paper from 'material-ui/Paper'
 
-const ChatContainer = ({messages = [], submit, reset}) => (
+const ChatContainer = ({messages = [], submit}) => (
   <div>
     <div id='chat'>
       {messages.map((m, i) => (
@@ -18,7 +18,7 @@ const ChatContainer = ({messages = [], submit, reset}) => (
     </div>
     <footer>
       <Paper style={{backgroundColor: '#CFD8DC', padding: '0 16'}}>
-        <Composer onSubmit={(e) => submit(e) && reset()} />
+        <Composer onSubmit={(e) => submit(e)} />
       </Paper>
     </footer>
   </div>
@@ -26,24 +26,21 @@ const ChatContainer = ({messages = [], submit, reset}) => (
 
 const mapStateToProps = (state) => {
   let room = 'MAIN'
-  //  TODO: State check of the selectedRoom in state
   switch (room) {
     case 'MAIN':
-      return state.chat // .messages
-      // return state.chat[room].messages
+      return state.chat
+      //  Future: messages property of chat
   }
+  //  TODO: State check of the selectedRoom in state
+  // return state.chat[room].messages
 }
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    submit: (e) => dispatch(submitMessage(e)),
-    reset: () => dispatch(reset('composer'))
+    submit: (e) => dispatch(submitMessage(e))
   }
 }
-
 const Chat = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ChatContainer)
-
 export default Chat

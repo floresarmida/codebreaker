@@ -8,7 +8,7 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 const styles = {
   chip: {
     margin: '8px 0',
-    //  The following statements enable the final
+    //  The following styles are all required for ellipsis overflow
     display: 'block',
     maxWidth: 260,
     overflowX: 'hidden',
@@ -24,15 +24,17 @@ const tests = [{
   expect: 'No properties'
 }, {
   case: 'http://www.cnn.com/',
-  expect: 'All but images'
+  expect: 'Core properties w/o image'
 }, {
   case: 'http://www.cnn.com/2017/04/10/politics/us-aircraft-carrier-carl-vinson-north-korea-strike-capabilities/index.html',
   expect: 'All properties'
 }, {
   case: 'https://angular.io/docs/ts/latest/',
   expect: 'All propeties (gathered from absolute paths)'
+}, {
+  case: 'http://www.example.com/invalidpath',
+  expect: 'Invalid - should raise an exception'
 }]
-
 const TestCases = () => (
   <div>
     <Subheader>

@@ -1,9 +1,10 @@
 import React from 'react'
 
 import {CardHeader, CardMedia, CardText} from 'material-ui/Card'
-import Avatar from 'material-ui/Avatar'
-import {List, ListItem} from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
+import {List, ListItem} from 'material-ui/List'
+import Avatar from 'material-ui/Avatar'
+
 import TestCases from '../components/TestCases'
 
 const techStack = [{
@@ -41,13 +42,17 @@ const Nav = () => (
         subtitle='Slouch v0.3 by Keller'
       />}
     >
-      <img src='https://domenicoluciani.com/assets/images/covers/gopher.jpg' />
+      <img src='https://domenicoluciani.com/assets/images/covers/gopher.jpg'
+        alt='Image of our hero, the golang gopher'
+      />
     </CardMedia>
     <Subheader>
       Overview
     </Subheader>
     <CardText>
       Slouch Chat is the foundation for INFO 344's final deliverable - a fully functional slack clone. This version (v0.3) fulfils the core requirements for the Cloud Deployment assignment, and lays the foundation for the final deliverable.
+      <br />
+      Note: I am currently troubleshooting some issues with the actual API, despite passing tests I still have problems parsing HTML. Exceptions are toString'd and displayed both in the console and as a modal.
     </CardText>
     <List>
       <Subheader>Location</Subheader>

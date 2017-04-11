@@ -1,13 +1,9 @@
 import { combineReducers } from 'redux'
-import { reducer as formReducer } from 'redux-form'
-import { dialogReducer } from 'redux-dialog'
+import { reducer as form } from 'redux-form'
 
 const initialChat = {
   messages: []
   //  TODO: Multiple chat branches in state
-  // 'MAIN': {
-  //   messages: []
-  // }
 }
 const chat = (state = initialChat, action) => {
   switch (action.type) {
@@ -32,14 +28,21 @@ const chat = (state = initialChat, action) => {
 }
 
 const initialModal = {
-  open: false
+  open: false,
+  content: ''
 }
 function modal (state = initialModal, action) {
   switch (action.type) {
     case 'OPEN_MODAL':
-      return { open: true }
+      return {
+        open: true,
+        content: action.data
+      }
     case 'CLOSE_MODAL':
-      return { open: false }
+      return {
+        open: false,
+        content: action.data
+      }
     default:
       return state
   }
@@ -49,8 +52,7 @@ function modal (state = initialModal, action) {
 const reducers = {
   chat,
   modal,
-  form: formReducer,     // redux-form dependency
-  dialogReducer //  redux-dialog
+  form  // redux-form reducers
 }
 const rootReducer = combineReducers(reducers)
 export default rootReducer

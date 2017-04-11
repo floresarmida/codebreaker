@@ -53,6 +53,7 @@ class App extends React.Component {
           >
             <Nav />
           </Drawer>
+          {/* Notifications (error etc) mount here, trigger via dispatch */}
           <Notification />
           <div id='body' style={{paddingLeft: push}}>
             <AppBar

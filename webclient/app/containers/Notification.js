@@ -1,13 +1,14 @@
 import React from 'react'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
 
 import { connect } from 'react-redux'
 import { closeModal } from '../actions'
 
-const NotificationComponent = ({ open = false, close }) => (
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+
+const NotificationComponent = ({ open, content, close }) => (
   <Dialog
-    title='Dialog With Actions'
+    title='Some news to share...'
     actions={[
       <FlatButton
         label='Close'
@@ -19,7 +20,7 @@ const NotificationComponent = ({ open = false, close }) => (
     open={open}
     onRequestClose={() => close()}
     >
-      The actions in this window were passed in as an array of React objects.
+      {content instanceof Error ? content.toString() : content}
   </Dialog>
 )
 
@@ -35,5 +36,4 @@ const Notification = connect(
   mapStateToProps,
   mapDispatchToProps
 )(NotificationComponent)
-
 export default Notification
