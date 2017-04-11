@@ -3,7 +3,6 @@ import { Field, reduxForm } from 'redux-form'
 
 import { TextField } from 'redux-form-material-ui'
 import RaisedButton from 'material-ui/RaisedButton'
-
 import Send from 'material-ui/svg-icons/content/send'
 
 class Form extends Component {
@@ -14,12 +13,15 @@ class Form extends Component {
     return (
       <form onSubmit={handleSubmit}>
         <Field name='composer' component={TextField}
-          hintText='Say something!'
-          fullWidth
-      />
+          floatingLabelText='Say something!'
+          floatingLabelStyle={{color: 'rgb(33, 150, 243)'}}
+          style={{display: 'inline-block'}}
+          // fullWidth
+          multiLine rowsMax={2}
+        />
         <RaisedButton type='submit' icon={<Send />}
           secondary disabled={pristine || submitting}
-          style={{margin: 8, float: 'right'}}
+          style={{margin: 8, display: 'inline-block', verticalAlign: 'bottom'}}
         />
       </form>
     )

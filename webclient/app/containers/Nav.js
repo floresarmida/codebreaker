@@ -6,6 +6,32 @@ import {List, ListItem} from 'material-ui/List'
 import Subheader from 'material-ui/Subheader'
 import Divider from 'material-ui/Divider'
 
+const list = [{
+  title: 'React.JS',
+  subtitle: 'Front-End Framework',
+  avatar: 'https://s3.amazonaws.com/media-p.slid.es/uploads/alexanderfarennikov/images/1198519/reactjs.png'
+}, {
+  title: 'Redux - Flux Architecture',
+  subtitle: 'Design Pattern',
+  avatar: 'https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png'
+}, {
+  title: 'Material-UI',
+  subtitle: 'UI Kit (JSS Styling)',
+  avatar: 'http://www.material-ui.com/images/components.svg'
+}, {
+  title: 'Go',
+  subtitle: 'Back-End & RESTful API',
+  avatar: 'http://www.unixstickers.com/image/cache/data/stickers/golang/golang.sh-600x600.png'
+}, {
+  title: 'DigitalOcean',
+  subtitle: 'Infrastructure Service',
+  avatar: 'https://a248.e.akamai.net/secure.meetupstatic.com/photos/member/2/d/f/e/highres_255491774.jpeg'
+}, {
+  title: 'Docker',
+  subtitle: 'Production Environment',
+  avatar: 'https://d3nmt5vlzunoa1.cloudfront.net/phpstorm/files/2015/10/large_v-trans.png'
+}]
+
 //  TODO: RoomSelector component, state and behavior reg. room selection.
 const Nav = () => (
   <div>
@@ -22,36 +48,13 @@ const Nav = () => (
     </CardText>
     <List>
       <Subheader>Technology Stack</Subheader>
-      <ListItem innerDivStyle={{color: 'black !important'}}
-        primaryText='React.JS'
-        secondaryText='Front-End Framework'
-        leftAvatar={<Avatar src='https://s3.amazonaws.com/media-p.slid.es/uploads/alexanderfarennikov/images/1198519/reactjs.png' />}
-      />
-      <ListItem
-        primaryText='Redux - Flux Architecture'
-        secondaryText='Design Pattern'
-        leftAvatar={<Avatar src='https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png' />}
-      />
-      <ListItem
-        primaryText='Material-UI'
-        secondaryText='UI Kit'
-        leftAvatar={<Avatar src='http://www.material-ui.com/images/components.svg' />}
-      />
-      <ListItem
-        primaryText='Go'
-        secondaryText='Back-End & RESTful API'
-        leftAvatar={<Avatar src='http://www.unixstickers.com/image/cache/data/stickers/golang/golang.sh-600x600.png' />}
-      />
-      <ListItem
-        primaryText='DigitalOcean'
-        secondaryText='Low Level IaaS'
-        leftAvatar={<Avatar src='https://a248.e.akamai.net/secure.meetupstatic.com/photos/member/2/d/f/e/highres_255491774.jpeg' />}
-      />
-      <ListItem
-        primaryText='Docker'
-        secondaryText='Production Environment'
-        leftAvatar={<Avatar src='https://d3nmt5vlzunoa1.cloudfront.net/phpstorm/files/2015/10/large_v-trans.png' />}
-      />
+      {list.map((item, i) => (
+        <ListItem key={i} disabled
+          primaryText={item.title}
+          secondaryText={item.subtitle}
+          leftAvatar={<Avatar src={item.avatar} />}
+        />
+      ))}
     </List>
     <Subheader>
         Key Facts:
