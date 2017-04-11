@@ -20,7 +20,6 @@ export const addMessage = (data) => {
   }
 }
 export const addOG = (data) => {  //  THUNK
-  console.log('OG data', data)
   return {
     type: 'ADD_OG',
     id: uuid(),
@@ -28,22 +27,33 @@ export const addOG = (data) => {  //  THUNK
   }
 }
 
+export const openModal = (data) => {  //  THUNK
+  return {
+    type: 'OPEN_MODAL',
+    data
+  }
+}
+export const closeModal = (data) => {  //  THUNK
+  return {
+    type: 'CLOSE_MODAL',
+    data
+  }
+}
+
 export const submitMessage = (data) => {  //  THUNK
-  console.log('SUBMIT')
   return function (dispatch) {
     //  TODO: Dispatch a log for this event loading like dispatch(addLinkAction(data))
     let submission = data.composer
-    console.log('dispatch submit message', submission)
     //  Normal Text Submission
     if (!submission.startsWith('http')) {  // URL check
       //  TODO: Check for link vs raw text message
-      console.log('Non-link (OpenGraph) content submitted. This client has not had raw messaging implemented yet')
       dispatch(addMessage(submission))
     } else {
     //  User submitted a link to OG content
       let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
       let query = `?url=${submission}`
       let request = target + query
+      //  TODO: Remove debug statement
       console.log('Request', request)
       fetch(request, {
         method: 'get'
@@ -54,7 +64,8 @@ export const submitMessage = (data) => {  //  THUNK
         dispatch(addOG(data))
       }).catch(err => {
       //  TODO: Dispatch an error toast
-        console.error(err)
+        dispatch(openModal(err))
+        // console.error('Error encounted in fetch:', err)
       })
     }
     // what you return here gets returned by the dispatch function that used this action creator

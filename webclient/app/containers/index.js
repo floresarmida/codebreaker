@@ -16,6 +16,8 @@ import Drawer from 'material-ui/Drawer'
 
 import Chat from './Chat'
 import Nav from './Nav'
+//  Errors and other modals will be triggered via dispatch
+import Notification from './Notification'
 
 class App extends React.Component {
   constructor (props) {
@@ -51,6 +53,7 @@ class App extends React.Component {
           >
             <Nav />
           </Drawer>
+          <Notification />
           <div id='body' style={{paddingLeft: push}}>
             <AppBar
               title='Slouch Chat'
