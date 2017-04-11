@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { submitMessage } from '../actions'
 //  Reset is called by submission (async via thunk)
 
+import OpenGraphMessage from '../components/OpenGraphMessage'
 import ChatMessage from '../components/ChatMessage'
 import Composer from '../components/Composer'
 
@@ -13,7 +14,12 @@ const ChatContainer = ({messages = [], submit}) => (
   <div>
     <div id='chat'>
       {messages.map((m, i) => (
-        <ChatMessage key={i} message={m} />
+        //  Conditional render based on content type
+        <div key={i}>
+          {m.og && <OpenGraphMessage message={m} />}
+          {m.message && <ChatMessage message={m.message} />}
+        </div>
+
     ))}
     </div>
     <footer>
