@@ -21,15 +21,18 @@ func caesar(cipher string) (CaesarSolutions, error) {
 	}
 	return solutions, nil
 }
+
+//Shift character, looping over alphabet if necessary.
 func shift(r rune, key int) rune {
-	//	Shift character, looping over alphabet if necessary.
-	sh := int(unicode.ToLower(r)) + key
-	if sh > 'z' {
-		return rune(sh - 26)
-	} else if sh < 'a' {
-		return rune(sh + 26)
+	if unicode.IsLetter(r) {
+		sh := int(unicode.ToLower(r)) + key
+		if sh > 'z' {
+			return rune(sh - 26)
+		} else if sh < 'a' {
+			return rune(sh + 26)
+		}
 	}
-	return rune(sh)
+	return rune(r)
 }
 
 //DecodeHandler takes a cipher and returns an object with potential solutions.
