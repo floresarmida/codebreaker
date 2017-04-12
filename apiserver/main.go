@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/info344-s17/challenges-RcKeller/apiserver/handlers"
+	"github.com/rckeller/codebreaker-api/apiserver/handlers"
 )
 
 const defaultPort = "80" //	Originally "80"
 const defaultHost = ""   //	Or Localhost?
 
 const (
-	apiRoot    = "/v1/"
-	apiSummary = apiRoot + "summary"
+	apiRoot        = "/v1/"
+	apiCodebreaker = apiRoot + "codebreaker"
 )
 
 //	Sample query (port 8080):
@@ -37,7 +37,8 @@ func main() {
 
 	//	Handle Summary route
 	//HINT: https://golang.org/pkg/net/http/#HandleFunc
-	http.HandleFunc(apiSummary, handlers.SummaryHandler)
+	// http.HandleFunc(apiSummary, handlers.SummaryHandler)
+	http.HandleFunc(apiCodebreaker, handlers.DecodeHandler)
 
 	//	Start server, log Fatal errors
 	//HINT: https://golang.org/pkg/net/http/#ListenAndServe
