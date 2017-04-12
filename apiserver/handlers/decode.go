@@ -2,15 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"unicode"
 )
 
 //Solutions - Map of potential solutions (outputs of different keys)
-// type Solutions map[int]string
-type Solutions [25]string
+type Solutions map[int]string
 
 func shift(r rune, key int) rune {
 	//	Shift character, looping over alphabet if necessary.
@@ -24,17 +22,15 @@ func shift(r rune, key int) rune {
 }
 
 func caesar(cipher string) (Solutions, error) {
-	var solutions [25]string
-	// solutions := make(Solutions)
-	solutions[1] = "Test Passed"
-	solutions[2] = "Test 2"
-	fmt.Println(solutions[1] + "\n" + solutions[2])
-	shiftOnce := strings.Map(
-		func(r rune) rune {
-			return shift(r, 1)
-		},
-		cipher)
-	fmt.Println("Cipher & Solution\n" + cipher + "\n" + shiftOnce)
+	solutions := make(Solutions)
+	for i := 0; i <= 25; i++ {
+		solutions[i] = strings.Map(
+			func(r rune) rune {
+				return shift(r, i)
+			},
+			cipher)
+	}
+
 	return solutions, nil
 }
 
@@ -44,11 +40,11 @@ func DecodeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json; charset=utf-8")
 
 	//	Get URL query | FormValue handles POST cases: https://golang.org/pkg/net/http/#Request.FormValue
-	cipher := r.FormValue("cipher")
+	cipher := r.FormValue("caesar")
 
 	//	Handling poor queries
 	if len(cipher) == 0 {
-		http.Error(w, "Error - Incomplete cipher",
+		http.Error(w, "Error - Incomplete cipher text",
 			http.StatusBadRequest)
 		return
 	} else if len(cipher) > 255 {
