@@ -9,7 +9,8 @@ import (
 )
 
 //Solutions - Map of potential solutions (outputs of different keys)
-type Solutions map[string]string
+// type Solutions map[int]string
+type Solutions [25]string
 
 func shift(r rune, key int) rune {
 	//	Shift character, looping over alphabet if necessary.
@@ -23,19 +24,19 @@ func shift(r rune, key int) rune {
 }
 
 func caesar(cipher string) (Solutions, error) {
+	var solutions [25]string
+	// solutions := make(Solutions)
+	solutions[1] = "Test Passed"
+	solutions[2] = "Test 2"
+	fmt.Println(solutions[1] + "\n" + solutions[2])
 	shiftOnce := strings.Map(
 		func(r rune) rune {
 			return shift(r, 1)
 		},
 		cipher)
-	fmt.Println("Solution" + shiftOnce)
-	return nil, nil
+	fmt.Println("Cipher & Solution\n" + cipher + "\n" + shiftOnce)
+	return solutions, nil
 }
-
-// func decode(cipher string) (Solutions, error) {
-// 	fmt.Println(cipher)
-// 	return nil, nil
-// }
 
 //DecodeHandler given a URL, returns OpenGraph props w/ JSON encoding
 func DecodeHandler(w http.ResponseWriter, r *http.Request) {
