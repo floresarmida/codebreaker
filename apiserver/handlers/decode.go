@@ -4,14 +4,38 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
+	"unicode"
 )
 
-type solutionMap map[string]string
+//Solutions - Map of potential solutions (outputs of different keys)
+type Solutions map[string]string
 
-func decode(cipher string) (solutionMap, error) {
-	fmt.Println(cipher)
+func shift(r rune, key int) rune {
+	//	Shift character, looping over alphabet if necessary.
+	sh := int(unicode.ToLower(r)) + key
+	if sh > 'z' {
+		return rune(sh - 26)
+	} else if sh < 'a' {
+		return rune(sh + 26)
+	}
+	return rune(sh)
+}
+
+func caesar(cipher string) (Solutions, error) {
+	shiftOnce := strings.Map(
+		func(r rune) rune {
+			return shift(r, 1)
+		},
+		cipher)
+	fmt.Println("Solution" + shiftOnce)
 	return nil, nil
 }
+
+// func decode(cipher string) (Solutions, error) {
+// 	fmt.Println(cipher)
+// 	return nil, nil
+// }
 
 //DecodeHandler given a URL, returns OpenGraph props w/ JSON encoding
 func DecodeHandler(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +57,7 @@ func DecodeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Process cipher
-	solutions, err := decode(cipher)
+	solutions, err := caesar(cipher)
 
 	//	Generate OG page summary
 	// summary, err := getPageSummary(cipher)
