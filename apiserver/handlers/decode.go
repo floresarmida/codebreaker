@@ -31,6 +31,7 @@ func shift(r rune, key int) rune {
 		} else if sh < 'a' {
 			return rune(sh + 26)
 		}
+		return rune(sh)
 	}
 	return rune(r)
 }
