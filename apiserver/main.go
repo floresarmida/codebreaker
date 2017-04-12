@@ -13,36 +13,36 @@ const defaultPort = "80" //	Originally "80"
 const defaultHost = ""   //	Or Localhost?
 
 const (
-	apiRoot        = "/v1/"
-	apiCodebreaker = apiRoot + "codebreaker"
+	version = "/v1/"
+	apiName = version + "codebreaker"
 )
 
 //	Sample query (port 8080):
-//	http://localhost:8080/v1/summary?url=http://ogp.me/
+//	export HOST="localhost" && PORT="8080"
+//	http://localhost:8080/v1/codebreaker?caesar=abc
 
 //main is the main entry point for this program
 func main() {
-	// PORT - port number to listen on for HTTP requests (if not set, use defaultPort)
+	// HOST - host address to respond to
+	host := os.Getenv("HOST")
+	if len(host) == 0 {
+		host = defaultHost
+		fmt.Printf("HOST not defined in environment, defaulting to undefined (localhost or 127.0.0.1)")
+	}
+	// PORT - port number to expose
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		port = defaultPort
 		fmt.Printf("PORT not defined in environment, defaulting to " + defaultPort + "\n")
 	}
-	// HOST - host address to respond to (if not set, leave empty, which means any host)
-	host := os.Getenv("HOST")
-	if len(host) == 0 {
-		host = defaultHost
-		fmt.Printf("HOST not defined in environment, defaulting to %s\n", defaultHost)
-	}
+	serveLocation := host + ":" + port
 
-	//	Handle Summary route
-	//HINT: https://golang.org/pkg/net/http/#HandleFunc
-	// http.HandleFunc(apiSummary, handlers.SummaryHandler)
-	http.HandleFunc(apiCodebreaker, handlers.DecodeHandler)
+	//	Handle codebreaker API calls
+	// https://golang.org/pkg/net/http/#HandleFunc
+	http.HandleFunc(apiName, handlers.DecodeHandler)
 
 	//	Start server, log Fatal errors
-	//HINT: https://golang.org/pkg/net/http/#ListenAndServe
-	serveLocation := host + ":" + port
+	// https://golang.org/pkg/net/http/#ListenAndServe
 	fmt.Printf("Server is live at %s...\n", serveLocation)
 	log.Fatal(http.ListenAndServe(serveLocation, nil))
 
