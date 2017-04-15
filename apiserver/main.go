@@ -39,7 +39,7 @@ func main() {
 
 	//	Handle codebreaker API calls
 	// https://golang.org/pkg/net/http/#HandleFunc
-	http.HandleFunc(apiName, handlers.DecodeHandler)
+	http.HandleFunc(apiName, handlers.CodebreakerHandler)
 
 	//	Start server, log Fatal errors
 	// https://golang.org/pkg/net/http/#ListenAndServe

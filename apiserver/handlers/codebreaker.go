@@ -36,8 +36,8 @@ func shift(r rune, key int) rune {
 	return rune(r)
 }
 
-//DecodeHandler takes a cipher and returns an object with potential solutions.
-func DecodeHandler(w http.ResponseWriter, r *http.Request) {
+//CodebreakerHandler takes a cipher and returns an object with potential solutions.
+func CodebreakerHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 	w.Header().Add("Content-Type", "application/json; charset=utf-8")
 
