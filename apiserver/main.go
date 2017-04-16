@@ -9,15 +9,14 @@ import (
 	"github.com/rckeller/codebreaker-api/apiserver/handlers"
 )
 
-const defaultPort = "80" //	Originally "80"
-const defaultHost = ""   //	Or Localhost?
-
+const defaultPort = "80"
+const defaultHost = "" //Becomes 127.0.0.1 or localhost dep on OS
 const (
 	version = "/v1/"
 	apiName = version + "codebreaker"
 )
 
-//	Sample query (port 8080):
+//	For a sample query, run the following:
 //	export HOST="localhost" && PORT="8080"
 //	http://localhost:8080/v1/codebreaker?caesar=abc
 
@@ -38,11 +37,9 @@ func main() {
 	serveLocation := host + ":" + port
 
 	//	Handle codebreaker API calls
-	// https://golang.org/pkg/net/http/#HandleFunc
 	http.HandleFunc(apiName, handlers.CodebreakerHandler)
 
 	//	Start server, log Fatal errors
-	// https://golang.org/pkg/net/http/#ListenAndServe
 	fmt.Printf("Server is live at %s...\n", serveLocation)
 	log.Fatal(http.ListenAndServe(serveLocation, nil))
 
