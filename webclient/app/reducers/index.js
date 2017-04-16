@@ -2,27 +2,35 @@ import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form'
 
 const initialChat = {
-  messages: []
+  solutions: []
   //  TODO: Multiple chat branches in state
 }
 const chat = (state = initialChat, action) => {
   switch (action.type) {
-    case 'ADD_MESSAGE':
+    case 'ADD_CAESAR_SOLUTION':
+    console.log("ACTION", action)
       return { ...state,
-        messages: [
-          ...state.messages, {
-            message: action.data
+        solutions: [
+          ...state.solutions, {
+            solution: action.data
           }
         ]}
-    case 'ADD_OG':
-      return { ...state,
-        messages: [
-          ...state.messages, {
-            id: action.id,
-            og: action.data,
-            source: action.source
-          }
-        ]}
+    // case 'ADD_MESSAGE':
+    //   return { ...state,
+    //     messages: [
+    //       ...state.messages, {
+    //         message: action.data
+    //       }
+    //     ]}
+    // case 'ADD_OG':
+    //   return { ...state,
+    //     messages: [
+    //       ...state.messages, {
+    //         id: action.id,
+    //         og: action.data,
+    //         source: action.source
+    //       }
+    //     ]}
     default:
       return state
   }

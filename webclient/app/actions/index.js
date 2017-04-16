@@ -14,9 +14,9 @@ const api = {
   }
 }
 
-export const addOG = (data, source) => {
+export const addCaesarSolution = (data, source) => {
   return {
-    type: 'ADD_OG',
+    type: 'ADD_CAESAR_SOLUTION',
     id: uuid(),
     data,
     source
@@ -51,8 +51,8 @@ export const decodeCaesar = (data) => {  //  THUNK
     }).then(response => {
       return response.json()
     }).then(data => {
-      // dispatch(addOG(data, submission))
       console.log('DECODED:', data)
+      dispatch(addCaesarSolution(data, submission))
     }).catch(err => {
       dispatch(openModal(err))
       console.error(err)

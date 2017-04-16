@@ -13,13 +13,13 @@ const styles = {
     padding: '8px 16px'
   }
 }
-const ChatMessage = ({message}) => (
+const SolutionCard = ({content}) => (
   <Card style={styles.card}>
     <CardHeader title='User Name' subtitle='Timestamp'
       style={styles.cardHeader} />
     <CardText style={styles.cardText}>
-      {message}
+      {content[0]}
     </CardText>
   </Card>
 )
-export default ChatMessage
+export default SolutionCard

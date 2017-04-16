@@ -14,7 +14,7 @@ injectTapEventPlugin()
 import AppBar from 'material-ui/AppBar'
 import Drawer from 'material-ui/Drawer'
 
-import ComposerContainer from './ComposerContainer'
+import QueryWindow from './QueryWindow'
 import Nav from './Nav'
 //  Errors and other modals will be triggered via dispatch
 import Notification from './Notification'
@@ -61,7 +61,7 @@ class App extends React.Component {
               onLeftIconButtonTouchTap={this.toggleNav}
               style={Theme.appBar} zDepth={2}
               />
-            <ComposerContainer />
+            <QueryWindow />
           </div>
         </div>
       </MuiThemeProvider>
