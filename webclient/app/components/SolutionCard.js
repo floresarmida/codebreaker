@@ -1,30 +1,32 @@
 import React from 'react'
 
-import {Card, CardHeader, CardText} from 'material-ui/Card'
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
+import {Card, CardHeader} from 'material-ui/Card'
+import {List, ListItem} from 'material-ui/List'
+import Avatar from 'material-ui/Avatar'
+
+//  Nice for UX, though overkill
+import CopyToClipboard from 'react-copy-to-clipboard'
 
 const SolutionCard = ({source, solutions}) => (
-  <Card>
-    <CardHeader title='Transposition Solutions'
+  <Card style={{marginTop: 32}}>
+    <CardHeader title='Transposition Solutions - Click to Copy'
       subtitle={`Query: ${source}`}
     />
-    <CardText>{solutions[13]}</CardText>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHeaderColumn>Key</TableHeaderColumn>
-          <TableHeaderColumn>Solution</TableHeaderColumn>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Object.keys(solutions).forEach((key) => (
-          <TableRow>
-            <TableRowColumn>Key: {key}</TableRowColumn>
-            <TableRowColumn>Solution: {solutions[key] && console.log(solutions[key])}</TableRowColumn>
-          </TableRow>
+    <List>
+      {solutions.map((s, i) => (
+        <CopyToClipboard key={i} text={s}>
+          <ListItem
+            key={i} primaryText={s}
+            leftAvatar={
+              <Avatar size={30} style={{margin: 5}}
+                backgroundColor={'#388e3c'}
+              >
+                {i}
+              </Avatar>}
+            />
+        </CopyToClipboard>
         ))}
-      </TableBody>
-    </Table>
+    </List>
   </Card>
 )
 export default SolutionCard

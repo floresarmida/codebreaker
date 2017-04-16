@@ -52,7 +52,8 @@ export const decodeCaesar = (data) => {  //  THUNK
       return response.json()
     }).then(data => {
       console.log('DECODED:', data)
-      dispatch(addCaesarSolution(data, submission))
+      let dataArray = Object.keys(data).map(key => data[key])
+      dispatch(addCaesarSolution(dataArray, submission))
     }).catch(err => {
       dispatch(openModal(err))
       console.error(err)

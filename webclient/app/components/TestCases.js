@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Subheader from 'material-ui/Subheader'
 import {ListItem} from 'material-ui/List'
 
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -16,17 +15,17 @@ const styles = {
 }
 
 const tests = [{
-  case: 'http://ogp.me/',
-  expect: 'All properties'
+  case: '[Rwbnac 90b Anonanwln Qnan]',
+  expect: '(17) [Insert 90s Reference Here]'
 }, {
-  case: 'https://en.wikipedia.org/wiki/Julian_Assange',
-  expect: 'No properties'
+  case: 'ubhfgba, jr unir n ceboyrz',
+  expect: '(13) Houston, we have a problem'
 }, {
-  case: 'http://www.cnn.com/',
-  expect: 'Core properties w/o image'
+  case: 'FYAI RFC NJYLCR',
+  expect: '(2) HACK THE PLANET'
 }, {
-  case: 'http://www.cnn.com/2017/04/10/politics/us-aircraft-carrier-carl-vinson-north-korea-strike-capabilities/index.html',
-  expect: 'All properties'
+  case: 'Cqn Ljtn rb j Urn',
+  expect: '(17) The Cake is a Lie'
 }]
 const TestCases = () => (
   <div>
@@ -34,7 +33,7 @@ const TestCases = () => (
         <CopyToClipboard key={i} text={t.case}>
           <ListItem style={styles.listItem}
             primaryText={t.case}
-            secondaryText={`Expected: ${t.expect}`}
+            secondaryText={t.expect}
           />
         </CopyToClipboard>
       ))}

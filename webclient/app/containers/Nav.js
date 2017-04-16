@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {CardHeader, CardMedia, CardText} from 'material-ui/Card'
+import {CardMedia, CardText} from 'material-ui/Card'
 import Subheader from 'material-ui/Subheader'
 import {List, ListItem} from 'material-ui/List'
 
