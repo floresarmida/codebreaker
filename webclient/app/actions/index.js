@@ -10,18 +10,10 @@ const api = {
   host: '138.68.21.112',
   version: 'v1',
   endpoint: {
-    summary: 'summary',
     codebreaker: 'codebreaker'
   }
 }
 
-export const addMessage = (data) => {
-  return {
-    type: 'ADD_MESSAGE',
-    id: uuid(),
-    data
-  }
-}
 export const addOG = (data, source) => {
   return {
     type: 'ADD_OG',
@@ -46,29 +38,25 @@ export const closeModal = (data) => {  //  THUNK
 
 export const decodeCaesar = (data) => {  //  THUNK
   return function (dispatch) {
-    //  TODO: Dispatch a log for this event loading like dispatch(addLinkAction(data))
     let submission = data.composer
-    //  Normal Text Submission
-    if (!submission.startsWith('http')) {
-      dispatch(addMessage(submission))
-    } else {
-    //  Link submission (eval props via OG API)
-      let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
-      let query = `?caesar=${submission}`
-      let request = target + query
 
-      console.log('GET:', request)
-      fetch(request, {
-        method: 'get'
-      }).then(response => {
-        return response.json()
-      }).then(data => {
-        dispatch(addOG(data, submission))
-      }).catch(err => {
-        dispatch(openModal(err))
-        console.error(err)
-      })
-    }
+    //  Creating query w/ string literals.
+    let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.codebreaker}`
+    let query = `?caesar=${submission}`
+    let request = target + query
+
+    console.log('GET:', request)
+    fetch(request, {
+      method: 'get'
+    }).then(response => {
+      return response.json()
+    }).then(data => {
+      // dispatch(addOG(data, submission))
+      console.log('DECODED:', data)
+    }).catch(err => {
+      dispatch(openModal(err))
+      console.error(err)
+    })
     dispatch(reset('composer')) //  Form reset
     // what you return here gets returned by the dispatch function that used this action creator
     return null

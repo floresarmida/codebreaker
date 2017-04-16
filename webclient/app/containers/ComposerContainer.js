@@ -10,7 +10,7 @@ import Composer from '../components/Composer'
 
 import Paper from 'material-ui/Paper'
 
-const ChatContainer = ({messages = [], submit}) => (
+const Container = ({messages = [], submit}) => (
   <div>
     <div id='chat'>
       {messages.map((m, i) => (
@@ -45,8 +45,8 @@ const mapDispatchToProps = (dispatch) => {
     submit: (e) => dispatch(decodeCaesar(e))
   }
 }
-const Chat = connect(
+const ComposerContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChatContainer)
-export default Chat
+)(Container)
+export default ComposerContainer
