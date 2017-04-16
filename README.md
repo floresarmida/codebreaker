@@ -1,7 +1,25 @@
-# INFO 344 Challenges
+# Codebreaker API | Info 310 - Paper 3
 
-This repo was created for you by GitHub Classroom. **DO NOT FORK THIS REPO INTO YOUR OWN ACCOUNT!** It is already private. Only you and the teaching team can see the code in this repo. Please make all of your commits to branches in this repo.
+Demo: [Student Server](http://students.washington.edu/rykeller/codebreaker/) and [a sample query](http://138.68.21.112/v1/codebreaker?caesar=FYAI%20RFC%20NJYLCR)
 
-Clone this repo to your development machine, and for each assignment, create a new branch, as directed in the challenge description. Make all commits for a given challenge only to that challenge branch, and push that branch up to GitHub. When you are finished with challenge, [create a GitHub Pull Request](https://help.github.com/articles/creating-a-pull-request/), asking to merge all commits from your challenge branch back into the `master` branch. We will use that pull request to provide detailed inline feedback on your code.
+This is a cipher codebreaker (for Caesar Transposition) API I've developed. Solving this in a python or java CLI tool wasn't going to be as fun, and I wanted to sharpen up my fullstack skills for my new job, so I decided to do this. To make it easy to grade, I heavily commented the codebreaking process in the server and created a web-client that both renders decryptions and logs the request/results to the web console.
 
-Note that you can still add commits to the branch after you create the pull request, and those new commits will be automatically added to the pull request as long as it's still open.
+### API Server
+Built using go / golang, files of interest are:
+
+main.go
+: Initializes the server, environment, routes requests for codebreaking to the API handler
+
+handlers/codebreaker.go
+: This is where decryption occurs, and errors are handled if the request is ridiculous.
+
+Although not good practice, I also included my dockerfile (available on the hub as rykeller/codebreakerapi)
+
+### Web Client
+Front-end for testing API calls, renders everything in a somewhat pretty format and gives some API documentation and test cases.
+
+Uses React & Redux if you're curious, the code may look a little strange because state and functions are abstracted out of components and are connected via higher order components (containers)
+
+---
+
+Please be advised that I'll probably take the web client down once this is graded for a class I'm taking
