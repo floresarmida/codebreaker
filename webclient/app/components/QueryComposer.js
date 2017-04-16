@@ -11,7 +11,7 @@ class Form extends Component {
     return (
       <form onSubmit={handleSubmit}>
         <Field name='composer' component={TextField}
-          floatingLabelText='Say something!'
+          floatingLabelText='Enter ciphertext to decode...'
           floatingLabelStyle={{color: 'rgb(33, 150, 243)'}}
           style={{
             width: 'calc(100% - 100px)'
@@ -30,7 +30,7 @@ class Form extends Component {
   }
 }
 
-let MessageBox = reduxForm({
+let QueryComposer = reduxForm({
   form: 'composer'  // Identifier
 })(Form)
-export default MessageBox
+export default QueryComposer

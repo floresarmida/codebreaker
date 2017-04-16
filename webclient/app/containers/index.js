@@ -14,7 +14,7 @@ injectTapEventPlugin()
 import AppBar from 'material-ui/AppBar'
 import Drawer from 'material-ui/Drawer'
 
-import QueryWindow from './QueryWindow'
+import QueryTool from './QueryTool'
 import Nav from './Nav'
 //  Errors and other modals will be triggered via dispatch
 import Notification from './Notification'
@@ -57,11 +57,11 @@ class App extends React.Component {
           <Notification />
           <div id='body' style={{paddingLeft: push}}>
             <AppBar
-              title='Slouch Chat'
+              title='Transposition Cipher Codebreaker'
               onLeftIconButtonTouchTap={this.toggleNav}
               style={Theme.appBar} zDepth={2}
               />
-            <QueryWindow />
+            <QueryTool />
           </div>
         </div>
       </MuiThemeProvider>

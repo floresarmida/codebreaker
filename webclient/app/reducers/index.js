@@ -3,7 +3,6 @@ import { reducer as form } from 'redux-form'
 
 const initialChat = {
   queries: []
-  //  TODO: Multiple chat branches in state
 }
 const chat = (state = initialChat, action) => {
   switch (action.type) {
@@ -16,22 +15,6 @@ const chat = (state = initialChat, action) => {
             source: action.source
           }
         ]}
-    // case 'ADD_MESSAGE':
-    //   return { ...state,
-    //     messages: [
-    //       ...state.messages, {
-    //         message: action.data
-    //       }
-    //     ]}
-    // case 'ADD_OG':
-    //   return { ...state,
-    //     messages: [
-    //       ...state.messages, {
-    //         id: action.id,
-    //         og: action.data,
-    //         source: action.source
-    //       }
-    //     ]}
     default:
       return state
   }

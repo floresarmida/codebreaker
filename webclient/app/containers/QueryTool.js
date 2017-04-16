@@ -5,7 +5,7 @@ import { decodeCaesar } from '../actions'
 //  Reset is called by submission (async via thunk)
 
 import SolutionCard from '../components/SolutionCard'
-import Composer from '../components/Composer'
+import QueryComposer from '../components/QueryComposer'
 
 import Paper from 'material-ui/Paper'
 
@@ -20,7 +20,7 @@ const Container = ({queries = [], submit}) => (
     </div>
     <footer>
       <Paper style={{backgroundColor: '#CFD8DC', padding: '0 16'}}>
-        <Composer onSubmit={(e) => submit(e)} />
+        <QueryComposer onSubmit={(e) => submit(e)} />
       </Paper>
     </footer>
   </div>
@@ -38,8 +38,8 @@ const mapDispatchToProps = (dispatch) => {
     submit: (e) => dispatch(decodeCaesar(e))
   }
 }
-const QueryWindow = connect(
+const QueryTool = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Container)
-export default QueryWindow
+export default QueryTool

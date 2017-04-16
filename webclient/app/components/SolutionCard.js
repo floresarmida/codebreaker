@@ -1,18 +1,8 @@
 import React from 'react'
 
 import {Card, CardHeader, CardText} from 'material-ui/Card'
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 
-// const styles = {
-//   card: {
-//     margin: 16
-//   },
-//   cardHeader: {
-//     padding: '8px 16px'
-//   },
-//   cardText: {
-//     padding: '8px 16px'
-//   }
-// }
 const SolutionCard = ({source, solutions}) => (
   <Card>
     <CardHeader title='Casar Transposition Solutions'
