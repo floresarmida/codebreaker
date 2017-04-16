@@ -6,10 +6,12 @@ import {reset} from 'redux-form'  //  Action to reset controlled forms
 //  http://138.68.249.21/v1/summary?url=http://ogp.me/
 const api = {
   protocol: 'http://',
-  host: '138.68.249.21',  // Name: info-ocean
+  // DigitalOcean server I've dedicated to  this assignment, not setting domain.
+  host: '138.68.21.112',
   version: 'v1',
   endpoint: {
-    summary: 'summary'
+    summary: 'summary',
+    codebreaker: 'codebreaker'
   }
 }
 
@@ -42,7 +44,7 @@ export const closeModal = (data) => {  //  THUNK
   }
 }
 
-export const submitMessage = (data) => {  //  THUNK
+export const decodeCaesar = (data) => {  //  THUNK
   return function (dispatch) {
     //  TODO: Dispatch a log for this event loading like dispatch(addLinkAction(data))
     let submission = data.composer
@@ -52,7 +54,7 @@ export const submitMessage = (data) => {  //  THUNK
     } else {
     //  Link submission (eval props via OG API)
       let target = `${api.protocol}${api.host}/${api.version}/${api.endpoint.summary}`
-      let query = `?url=${submission}`
+      let query = `?caesar=${submission}`
       let request = target + query
 
       console.log('GET:', request)

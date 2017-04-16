@@ -16,9 +16,12 @@ const (
 	apiName = version + "codebreaker"
 )
 
-//	For a sample query, run the following:
+//	For a sample query, try the following:
+//	LOCAL:
 //	export HOST="localhost" && PORT="8080"
 //	http://localhost:8080/v1/codebreaker?caesar=abc
+//	CLOUD:
+//	http://138.68.21.112/v1/codebreaker?caesar=abc
 
 //main is the main entry point for this program
 func main() {

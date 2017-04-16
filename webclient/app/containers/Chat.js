@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import { submitMessage } from '../actions'
+import { decodeCaesar } from '../actions'
 //  Reset is called by submission (async via thunk)
 
 import OpenGraphMessage from '../components/OpenGraphMessage'
@@ -42,7 +42,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    submit: (e) => dispatch(submitMessage(e))
+    submit: (e) => dispatch(decodeCaesar(e))
   }
 }
 const Chat = connect(
