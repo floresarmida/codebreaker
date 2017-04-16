@@ -9,13 +9,13 @@ import Composer from '../components/Composer'
 
 import Paper from 'material-ui/Paper'
 
-const Container = ({solutions = [], submit}) => (
+const Container = ({queries = [], submit}) => (
   <div>
     <div id='chat'>
-      {solutions.map((m, i) => (
-        <div key={i}>
-          <SolutionCard content={m.solution} />}
-        </div>
+      {queries.map((m, i) => (
+        <SolutionCard key={i}
+          source={m.source} solutions={m.solutions}
+        />
       ))}
     </div>
     <footer>
